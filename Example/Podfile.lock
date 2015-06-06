@@ -1,0 +1,37 @@
+PODS:
+  - Alamofire (1.2.2)
+  - Luncheon (0.1.0):
+    - Alamofire (~> 1.2)
+    - Placemat (~> 0.1)
+  - Nimble (0.4.2)
+  - Nocilla (0.10.0)
+  - Placemat (0.1.0)
+  - Quick (0.3.1)
+
+DEPENDENCIES:
+  - Luncheon (from `../`)
+  - Nimble
+  - Nocilla
+  - Placemat (from `https://github.com/Dan2552/Placemat.git`)
+  - Quick
+
+EXTERNAL SOURCES:
+  Luncheon:
+    :path: "../"
+  Placemat:
+    :git: https://github.com/Dan2552/Placemat.git
+
+CHECKOUT OPTIONS:
+  Placemat:
+    :commit: 99975f77c2160dae31d5e3974f691f4b51b07cbf
+    :git: https://github.com/Dan2552/Placemat.git
+
+SPEC CHECKSUMS:
+  Alamofire: 11a6022f5089887d92ffb5a3014c97a0a915ab98
+  Luncheon: 4f1bfba262fbfc96e58f83681a9c730aabe67a46
+  Nimble: 49b7a7da8919f42823d37c6d68cc6d15a7009f32
+  Nocilla: ae0a2b05f3087b473624ac2b25903695df51246a
+  Placemat: 3d9edcd7fda37a65c9128a266094861bbe8e9c55
+  Quick: 824572d3d198d51e52cf4aa722cebf7e59952a35
+
+COCOAPODS: 0.37.2

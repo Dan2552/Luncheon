@@ -10,19 +10,12 @@
 Pod::Spec.new do |s|
   s.name             = "Luncheon"
   s.version          = "0.1.0"
-  s.summary          = "A short description of Luncheon."
-  s.description      = <<-DESC
-                       An optional longer description of Luncheon
-
-                       * Markdown format.
-                       * Don't worry about the indent, we strip it!
-                       DESC
-  s.homepage         = "https://github.com/<GITHUB_USERNAME>/Luncheon"
-  # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
+  s.summary          = "REST model resource mapping. Time saving. Opinionated. Convention over configuration. Inspired by Rails and ActiveRecord."
+  s.homepage         = "https://github.com/Dan2552/Luncheon"
   s.license          = 'MIT'
   s.author           = { "Daniel Green" => "dan2552@gmail.com" }
-  s.source           = { :git => "https://github.com/<GITHUB_USERNAME>/Luncheon.git", :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.source           = { :git => "https://github.com/Dan2552/Luncheon.git", :tag => s.version.to_s }
+  s.social_media_url = 'https://twitter.com/Dan2552'
 
   s.platform     = :ios, '8.0'
   s.requires_arc = true
@@ -32,7 +25,6 @@ Pod::Spec.new do |s|
     'Luncheon' => ['Pod/Assets/*.png']
   }
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'Alamofire', '~> 1.2'
+  s.dependency 'Placemat', '~> 0.1'
 end

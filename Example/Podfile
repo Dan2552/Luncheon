@@ -2,6 +2,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
 target 'Luncheon_Example', :exclusive => true do
+  pod 'Placemat', :git => "https://github.com/Dan2552/Placemat.git"
   pod "Luncheon", :path => "../"
 end
 
@@ -10,4 +11,5 @@ target 'Luncheon_Tests', :exclusive => true do
 
   pod 'Quick'
   pod 'Nimble'
+  pod 'Nocilla'
 end
