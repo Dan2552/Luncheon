@@ -1,6 +1,6 @@
 # Luncheon
 
-[![CI Status](http://img.shields.io/travis/Daniel Green/Luncheon.svg?style=flat)](https://travis-ci.org/Daniel Green/Luncheon)
+[![CI Status](http://img.shields.io/travis/Dan2552/Luncheon.svg?style=flat)](https://travis-ci.org/Daniel Green/Luncheon)
 [![Version](https://img.shields.io/cocoapods/v/Luncheon.svg?style=flat)](http://cocoapods.org/pods/Luncheon)
 [![License](https://img.shields.io/cocoapods/l/Luncheon.svg?style=flat)](http://cocoapods.org/pods/Luncheon)
 [![Platform](https://img.shields.io/cocoapods/p/Luncheon.svg?style=flat)](http://cocoapods.org/pods/Luncheon)
