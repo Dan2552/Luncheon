@@ -8,16 +8,30 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UITableViewController {
 
+    var posts = [Post]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        Post.all { posts in
+            self.posts = posts as! [Post]
+            self.tableView.reloadData()
+        }
     }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return posts.count
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("reuse", forIndexPath: indexPath) as! UITableViewCell
+        let post = posts[indexPath.row]
+        
+        cell.textLabel?.text = post.title
+        cell.detailTextLabel?.text = post.body
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        return cell
     }
 
 }
