@@ -193,6 +193,8 @@ public class Luncheon: NSObject {
     }
     
     class func urlForAction(action: LuncheonNetworkAction, remoteId: NSNumber?) -> String {
+        Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders?.updateValue("application/json", forKey: "Accept")
+
         return "\(Options.baseUrl!)/\(pathForAction(action, remoteId: remoteId))"
     }
     
@@ -201,7 +203,7 @@ public class Luncheon: NSObject {
     public class func all(callback: ([Luncheon])->()) {
         let url = urlForAction(.INDEX, remoteId: nil)
         
-        Alamofire.request(.GET, url).responseJSON { (request, response, json, error) in
+        Alamofire.request(.GET, url, parameters: nil, encoding: .JSON).responseJSON { (request, response, json, error) in
             if error != nil {
                 Options.errorHandler(error: error, statusCode: response?.statusCode, object: nil)
                 return
@@ -215,8 +217,7 @@ public class Luncheon: NSObject {
     
     public class func find(identifier: Int, _ callback: (Luncheon?) -> ()) {
         let url = urlForAction(.SHOW, remoteId: identifier)
-        
-        Alamofire.request(.GET, url).responseJSON { (request, response, json, error) in
+        Alamofire.request(.GET, url, encoding: .JSON).responseJSON { (request, response, json, error) in
             if error != nil {
                 Options.errorHandler(error: error, statusCode: response?.statusCode, object: nil)
                 return
@@ -237,7 +238,7 @@ public class Luncheon: NSObject {
         let id = Int(remoteId!)
         let url = luncheonClass().urlForAction(LuncheonNetworkAction.SHOW, remoteId: id)
         
-        Alamofire.request(.GET, url).responseJSON { (request, response, json, error) in
+        Alamofire.request(.GET, url, encoding: .JSON).responseJSON { (request, response, json, error) in
             if error != nil {
                 Options.errorHandler(error: error, statusCode: response?.statusCode, object: nil)
                 return
