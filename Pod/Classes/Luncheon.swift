@@ -274,5 +274,20 @@ public class Luncheon: NSObject {
         }
     }
     
+    public func destroy(callback: () -> ()) {
+        let url = luncheonClass().urlForAction(.DESTROY, remoteId:remoteId)
+        Alamofire.request(.DELETE, url, encoding: .JSON).responseJSON { (request, response, json, error) in
+            if error != nil {
+                Options.errorHandler(error: error, statusCode: response?.statusCode, object: nil)
+                return
+            }
+            if response?.statusCode > 399 {
+                //TODO
+                return
+            }
+            callback()
+        }
+    }
+    
 }
  

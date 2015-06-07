@@ -163,11 +163,12 @@ class LuncheonRequestSpec: QuickSpec {
                 let object = LuncheonSubclass()
                 object.stringProperty = "c"
                 
-                var called = false
+                var called = [false, false]
                 object.save { object in
                     let o = object as! LuncheonSubclass
                     expect(o.remoteId).to(equal(4))
                     expect(o.attributesUnderscore(onlyChanged: true)).to(beEmpty())
+                    called[0] = true
                 }
                 
                 stubRequest("POST", "http://example.com/base_model_subclasses/3")
@@ -179,13 +180,28 @@ class LuncheonRequestSpec: QuickSpec {
                     let o = object as! LuncheonSubclass
                     expect(o.remoteId).to(equal(4))
                     expect(o.attributesUnderscore(onlyChanged: true)).to(beEmpty())
+                    called[1] = true
+                }
+                
+                expect(called).toEventually(equal([true, true]))
+            }
+        }
+        
+        describe("-destroy") {
+            it("calls to delete the resource") {
+                stubRequest("DELETE", "http://example.com/luncheon_subclasses/3").andReturn(204).withBody("")
+                var called = false
+                
+                let object = LuncheonSubclass()
+                object.remoteId = 3
+                object.destroy {
                     called = true
                 }
                 
-                expect(called).toEventually(beTrue())
+                expect(called).toEventually(beTrue(), timeout: 500)
             }
         }
-//        describe("-destroy") {}
+        
 //        describe("-action") {}
     }
 }
