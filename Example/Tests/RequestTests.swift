@@ -130,61 +130,73 @@ class LuncheonRequestSpec: QuickSpec {
         }
 
         describe("-save") {
-            it("saves the record and we the object returned has an id") {
-                stubRequest("POST", "http://example.com/luncheon_subclasses").andReturn(201).withBody("{ \"id\": 2 }")
-                let object = LuncheonSubclass()
-                
-                var called = false
-                object.save { object in
-                    let o = object as! LuncheonSubclass
-                    expect(o.remoteId).to(equal(2))
-                    called = true
+            
+            describe("no id") {
+                it("posts the record and we the object returned has an id") {
+                    stubRequest("POST", "http://example.com/luncheon_subclasses").andReturn(201).withBody("{ \"id\": 2 }")
+                    let object = LuncheonSubclass()
+                    
+                    var called = false
+                    object.save { object in
+                        let o = object as! LuncheonSubclass
+                        expect(o.remoteId).to(equal(2))
+                        called = true
+                    }
+                    expect(called).toEventually(beTrue())
                 }
-                expect(called).toEventually(beTrue())
+                
+                it("posts all properties that are set") {
+                    stubRequest("POST", "http://example.com/luncheon_subclasses").withBody("{\"number_property\":5}").andReturn(201).withBody("{ \"id\": 4 }")
+                    
+                    var called = false
+                    
+                    let object = LuncheonSubclass()
+                    object.numberProperty = 5
+                    object.save { object in
+                        let o = object as! LuncheonSubclass
+                        expect(o.remoteId).to(equal(4))
+                        called = true
+                    }
+                    
+                    expect(called).toEventually(beTrue())
+                }
             }
             
-            it("updates existing records") {
-                stubRequest("POST", "http://example.com/luncheon_subclasses/3").andReturn(200).withBody("{ \"id\": 3 }")
-                let object = LuncheonSubclass()
-                object.remoteId = 3
-                
-                var called = false
-                object.save { object in
-                    let o = object as! LuncheonSubclass
-                    expect(o.remoteId).to(equal(3))
-                    called = true
+            describe("with an id") {
+                it("updates existing records") {
+                    stubRequest("PATCH", "http://example.com/luncheon_subclasses/3").andReturn(200).withBody("{ \"id\": 3 }")
+                    var called = false
+                    
+                    let object = LuncheonSubclass()
+                    object.remoteId = 3
+                    
+                    object.save { object in
+                        let o = object as! LuncheonSubclass
+                        expect(o.remoteId).to(equal(3))
+                        called = true
+                    }
+                    expect(called).toEventually(beTrue())
                 }
-                expect(called).toEventually(beTrue())
+                
+                it("updates only dirty properties") {
+                    stubRequest("PATCH", "http://example.com/luncheon_subclasses/3").withBody("{\"string_property\":\"updated\"}").andReturn(200).withBody("{ \"id\": 3 }")
+                    var called = false
+                    
+                    let object = LuncheonSubclass()
+                    object.remoteId = 3
+                    object.stringProperty = "updated"
+                    object.save { object in
+                        let o = object as! LuncheonSubclass
+                        expect(o.remoteId).to(equal(3))
+                        called = true
+                    }
+                    
+                    expect(called).toEventually(beTrue())
+                }
+                
             }
             
-            it("updates only changed records") {
-                stubRequest("POST", "http://example.com/luncheon_subclasses").andReturn(201).withBody("{ \"id\": 4 }")
-                
-                let object = LuncheonSubclass()
-                object.stringProperty = "c"
-                
-                var called = [false, false]
-                object.save { object in
-                    let o = object as! LuncheonSubclass
-                    expect(o.remoteId).to(equal(4))
-                    expect(o.attributesUnderscore(onlyChanged: true)).to(beEmpty())
-                    called[0] = true
-                }
-                
-                stubRequest("POST", "http://example.com/base_model_subclasses/3")
-                    .withBody("{ \"stringProperty\": \"c\" }")
-                    .andReturn(200).withBody("{ \"id\": 4 }")
-                
-                object.stringProperty = "c"
-                object.save { object in
-                    let o = object as! LuncheonSubclass
-                    expect(o.remoteId).to(equal(4))
-                    expect(o.attributesUnderscore(onlyChanged: true)).to(beEmpty())
-                    called[1] = true
-                }
-                
-                expect(called).toEventually(equal([true, true]))
-            }
+
         }
         
         describe("-destroy") {
@@ -198,10 +210,10 @@ class LuncheonRequestSpec: QuickSpec {
                     called = true
                 }
                 
-                expect(called).toEventually(beTrue(), timeout: 500)
+                expect(called).toEventually(beTrue())
             }
         }
         
-//        describe("-action") {}
+//      describe("-action") {}
     }
 }

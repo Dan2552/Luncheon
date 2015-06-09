@@ -77,7 +77,10 @@ public class Luncheon: NSObject {
 // MARK: Attributes
     
     class func properties() -> [String] {
-        return ClassInspector.properties(self)
+        let externalBlacklist = [
+            "changedAttributes"
+        ]
+        return ClassInspector.properties(self).filter { p in !contains(externalBlacklist, p) }
     }
     
     public func attributes() -> [String: AnyObject] {
@@ -95,17 +98,15 @@ public class Luncheon: NSObject {
         return attributes
     }
 
-    // Should this be here or a server talking class?
-    public func attributesUnderscore(onlyChanged: Bool = false) -> [String: AnyObject] {
-        let attributes = onlyChanged ? self.changedAttributes : self.attributes()
-        var attributesUnderscore = [String: AnyObject]()
+    public func attributesToSend() -> [String: AnyObject] {
+        let attrs = attributes() as NSDictionary
+        let changes = changedAttributes as NSDictionary
+        let attributesToSend = attrs.only(changes.stringKeys()) as! [String: AnyObject]
         
-        for (key, value) in attributes {
-            attributesUnderscore[key.underscoreCase()] = value
-        }
-        
-        return attributesUnderscore
+        //TODO: use preferences to determine if underscore or not
+        return (attributesToSend as NSDictionary).underscoreKeys()
     }
+    
     
     public func assignAttribute(attributeName: String, withValue: AnyObject?) {
         var key = attributeName
@@ -256,10 +257,11 @@ public class Luncheon: NSObject {
     public func save(callback: (Luncheon) -> ()) {
         let action: LuncheonNetworkAction = (remoteId == nil) ? .CREATE : .UPDATE
         let url = luncheonClass().urlForAction(action, remoteId:remoteId)
+        let parameters = attributesToSend()
+        let method: Alamofire.Method = (action == LuncheonNetworkAction.CREATE) ? .POST : .PATCH
         
-        let parameters = attributesUnderscore(onlyChanged: (action == .UPDATE))
-        
-        Alamofire.request(.POST, url, parameters: parameters, encoding: .JSON).responseJSON { (request, response, json, error) in
+        println("calling \(method) \(url) with params: \(parameters)")
+        Alamofire.request(method, url, parameters: parameters, encoding: .JSON).responseJSON { (request, response, json, error) in
             if error != nil {
                 Options.errorHandler(error: error, statusCode: response?.statusCode, object: nil)
                 return
