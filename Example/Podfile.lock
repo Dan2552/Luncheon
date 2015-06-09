@@ -23,7 +23,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Placemat:
-    :commit: 99975f77c2160dae31d5e3974f691f4b51b07cbf
+    :commit: 5137889f6255cfbc0f983d40049d0c0b5e32d10c
     :git: https://github.com/Dan2552/Placemat.git
 
 SPEC CHECKSUMS:

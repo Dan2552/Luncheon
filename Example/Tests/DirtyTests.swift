@@ -14,21 +14,21 @@ class LuncheonDirtySpec: QuickSpec {
         
         describe("isChanged:") {
             it("returns true if the given property is changed") {
-                var instance = LuncheonSubclass()
+                let instance = LuncheonSubclass()
                 instance.stringProperty = "newValue"
                 
                 expect(instance.isChanged("stringProperty")).to(equal(true))
             }
             
             it("returns false is the given property is unchanged") {
-                var instance = LuncheonSubclass()
+                let instance = LuncheonSubclass()
                 expect(instance.isChanged("stringProperty")).to(equal(false))
             }
         }
 
         describe("oldValueFor:") {
             it("returns returns the old value if a property is changed") {
-                var instance = LuncheonSubclass()
+                let instance = LuncheonSubclass()
                 instance.stringProperty = "value1"
                 instance.stringProperty = "value2"
                 let oldValue : AnyObject? = instance.oldValueFor("stringProperty")
@@ -38,14 +38,33 @@ class LuncheonDirtySpec: QuickSpec {
         
         describe("isDirty") {
             it("returns true if there are any changes") {
-                var instance = LuncheonSubclass()
+                let instance = LuncheonSubclass()
                 instance.stringProperty = "newValue"
                 expect(instance.isDirty()).to(equal(true))
+                
             }
             
             it("returns false if no properties are changed") {
-                var instance = LuncheonSubclass()
+                let instance = LuncheonSubclass()
                 expect(instance.isDirty()).to(equal(false))
+            }
+        }
+        
+        describe("attributesToSend") {
+            it("contains only attributes that are changed") {
+                let instance = LuncheonSubclass()
+                instance.stringProperty = "hello"
+                
+                expect(instance.attributesToSend().keys).to(contain("string_property"))
+                expect(instance.attributesToSend().keys).toNot(contain("number_property"))
+            }
+            
+            it("makes the attribute keys underscore") {
+                let instance = LuncheonSubclass()
+                instance.stringProperty = "hello"
+                
+                expect(instance.attributesToSend().keys).to(contain("string_property"))
+
             }
         }
     }

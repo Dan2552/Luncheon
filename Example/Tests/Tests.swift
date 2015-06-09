@@ -46,24 +46,8 @@ class LuncheonSpec: QuickSpec {
                 let value = attributes["id"] as! Int
                 expect(value).to(equal(324))
             }
-        }
-        
-        describe("attributesUnderscore") {
-            it("returns the properties defined in the model with underscore keys") {
-                expect(modelSubclass.attributesUnderscore().keys).to(contain("string_property"))
-                expect(modelSubclass.attributesUnderscore().keys).to(contain("number_property"))
-            }
-            it("has the values of the properties") {
-                modelSubclass.stringProperty = "string property value"
-                let attributes = modelSubclass.attributesUnderscore()
-                let stringPropertyValue = attributes["string_property"] as! String
-                expect(stringPropertyValue).to(equal("string property value"))
-            }
-            it("returns 'id' for the property 'remote_id'") {
-                modelSubclass.remoteId = 324
-                let attributes = modelSubclass.attributes()
-                let value = attributes["id"] as! Int
-                expect(value).to(equal(324))
+            it("should not contain changedAttributes") {
+                expect(modelSubclass.attributes().keys).toNot(contain("changedAttributes"))
             }
         }
         
