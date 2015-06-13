@@ -80,13 +80,14 @@ public class Luncheon: NSObject {
         let externalBlacklist = [
             "changedAttributes"
         ]
-        return ClassInspector.properties(self).filter { p in !contains(externalBlacklist, p) }
+        
+        return ClassInspector.properties(self).filter { p in return !externalBlacklist.contains(p) }
     }
     
     public func attributes() -> [String: AnyObject] {
         var attributes = [String: AnyObject]()
         for property in luncheonClass().properties() {
-            if var value: AnyObject = valueForKey(property) {
+            if let value: AnyObject = valueForKey(property) {
                 attributes[property] = value
             } else {
                 attributes[property] = NSNull()
@@ -113,7 +114,7 @@ public class Luncheon: NSObject {
         if key == "id" { key = "remote_id" }
         key = key.camelCaseLower()
 
-        if contains(luncheonClass().properties(), key) {
+        if luncheonClass().properties().contains(key) {
             setValue(withValue, forKey: key)
         }
     }
@@ -127,7 +128,7 @@ public class Luncheon: NSObject {
 // MARK: Observers
     func addPropertyObservers() {
         for property in luncheonClass().properties() {
-            addObserver(self, forKeyPath: property, options: .New | .Old, context: nil)
+            addObserver(self, forKeyPath: property, options: [.New, .Old], context: nil)
         }
     }
     
@@ -137,11 +138,10 @@ public class Luncheon: NSObject {
         }
     }
     
-    override public func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
-        if changedAttributes[keyPath] != nil { return }
-        
-        let old: AnyObject? = change["old"]
-        changedAttributes[keyPath] = old
+    override public func observeValueForKeyPath(keyPath: String?, ofObject: AnyObject?, change: [NSObject : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+            if changedAttributes[keyPath!] != nil { return }
+            let old = change!["old"]
+            changedAttributes[keyPath!] = old
     }
     
 // MARK: Dirty attributes
@@ -204,7 +204,7 @@ public class Luncheon: NSObject {
     public class func all(callback: ([Luncheon])->()) {
         let url = urlForAction(.INDEX, remoteId: nil)
         
-        Alamofire.request(.GET, url, parameters: nil, encoding: .JSON).responseJSON { (request, response, json, error) in
+        Alamofire.request(.GET, URLString: url, parameters: nil, encoding: .JSON).responseJSON { (request, response, json, error) in
             if error != nil {
                 Options.errorHandler(error: error, statusCode: response?.statusCode, object: nil)
                 return
@@ -218,7 +218,7 @@ public class Luncheon: NSObject {
     
     public class func find(identifier: Int, _ callback: (Luncheon?) -> ()) {
         let url = urlForAction(.SHOW, remoteId: identifier)
-        Alamofire.request(.GET, url, encoding: .JSON).responseJSON { (request, response, json, error) in
+        Alamofire.request(.GET, URLString: url, encoding: .JSON).responseJSON { (request, response, json, error) in
             if error != nil {
                 Options.errorHandler(error: error, statusCode: response?.statusCode, object: nil)
                 return
@@ -239,7 +239,7 @@ public class Luncheon: NSObject {
         let id = Int(remoteId!)
         let url = luncheonClass().urlForAction(LuncheonNetworkAction.SHOW, remoteId: id)
         
-        Alamofire.request(.GET, url, encoding: .JSON).responseJSON { (request, response, json, error) in
+        Alamofire.request(.GET, URLString: url, encoding: .JSON).responseJSON { (request, response, json, error) in
             if error != nil {
                 Options.errorHandler(error: error, statusCode: response?.statusCode, object: nil)
                 return
@@ -260,8 +260,8 @@ public class Luncheon: NSObject {
         let parameters = attributesToSend()
         let method: Alamofire.Method = (action == LuncheonNetworkAction.CREATE) ? .POST : .PATCH
         
-        println("calling \(method) \(url) with params: \(parameters)")
-        Alamofire.request(method, url, parameters: parameters, encoding: .JSON).responseJSON { (request, response, json, error) in
+        print("calling \(method) \(url) with params: \(parameters)")
+        Alamofire.request(method, URLString: url, parameters: parameters, encoding: .JSON).responseJSON { (request, response, json, error) in
             if error != nil {
                 Options.errorHandler(error: error, statusCode: response?.statusCode, object: nil)
                 return
@@ -278,7 +278,7 @@ public class Luncheon: NSObject {
     
     public func destroy(callback: () -> ()) {
         let url = luncheonClass().urlForAction(.DESTROY, remoteId:remoteId)
-        Alamofire.request(.DELETE, url, encoding: .JSON).responseJSON { (request, response, json, error) in
+        Alamofire.request(.DELETE, URLString: url, encoding: .JSON).responseJSON { (request, response, json, error) in
             if error != nil {
                 Options.errorHandler(error: error, statusCode: response?.statusCode, object: nil)
                 return
