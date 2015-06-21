@@ -27,9 +27,8 @@ class ClassInspector {
         free(properties)
         
         if let superclass: AnyClass = classToInspect.superclass() {
-            if superclass.respondsToSelector(Selector("properties")) {
-                let sc = superclass as! Luncheon.Type
-                propertyNames += sc.properties()
+            if superclass.conformsToProtocol(Lunch) {
+                propertyNames += self.properties(superclass)
             }
         }
         

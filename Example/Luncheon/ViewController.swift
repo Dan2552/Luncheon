@@ -14,8 +14,9 @@ class ViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        Post.all { posts in
-            self.posts = posts as! [Post]
+        
+        Post.remote.all { (posts: [Post]) in
+            self.posts = posts
             self.tableView.reloadData()
         }
     }

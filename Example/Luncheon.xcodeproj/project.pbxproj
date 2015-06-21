@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		374AD3021B23B80C00647A9A /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374AD3011B23B80C00647A9A /* Post.swift */; };
-		37A026731B234F2100784B29 /* LuncheonSubclass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A0266F1B234F2100784B29 /* LuncheonSubclass.swift */; };
+		37A026731B234F2100784B29 /* TestSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A0266F1B234F2100784B29 /* TestSubject.swift */; };
 		37A026741B234F2100784B29 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A026701B234F2100784B29 /* Tests.swift */; };
 		37A026751B234F2100784B29 /* DirtyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A026711B234F2100784B29 /* DirtyTests.swift */; };
 		37A026761B234F2100784B29 /* RequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A026721B234F2100784B29 /* RequestTests.swift */; };
@@ -35,7 +35,7 @@
 		0853FF2F15507FBB7F4C3278 /* Pods_Luncheon_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Luncheon_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2128663496060F5C0156F200 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		374AD3011B23B80C00647A9A /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
-		37A0266F1B234F2100784B29 /* LuncheonSubclass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LuncheonSubclass.swift; sourceTree = "<group>"; };
+		37A0266F1B234F2100784B29 /* TestSubject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSubject.swift; sourceTree = "<group>"; };
 		37A026701B234F2100784B29 /* Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		37A026711B234F2100784B29 /* DirtyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirtyTests.swift; sourceTree = "<group>"; };
 		37A026721B234F2100784B29 /* RequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestTests.swift; sourceTree = "<group>"; };
@@ -125,7 +125,7 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				37A0266F1B234F2100784B29 /* LuncheonSubclass.swift */,
+				37A0266F1B234F2100784B29 /* TestSubject.swift */,
 				37A026701B234F2100784B29 /* Tests.swift */,
 				37A026711B234F2100784B29 /* DirtyTests.swift */,
 				37A026721B234F2100784B29 /* RequestTests.swift */,
@@ -384,7 +384,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				37A026761B234F2100784B29 /* RequestTests.swift in Sources */,
-				37A026731B234F2100784B29 /* LuncheonSubclass.swift in Sources */,
+				37A026731B234F2100784B29 /* TestSubject.swift in Sources */,
 				37A026741B234F2100784B29 /* Tests.swift in Sources */,
 				37A026751B234F2100784B29 /* DirtyTests.swift in Sources */,
 			);

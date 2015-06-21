@@ -9,7 +9,11 @@
 import Foundation
 import Luncheon
 
-class Post: Luncheon {
+class Post: NSObject, Lunch {
     dynamic var title: String?
     dynamic var body: String?
+    
+    required override init() {
+        super.init()
+    }
 }
