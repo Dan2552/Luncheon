@@ -173,7 +173,10 @@ class LuncheonRequestSpec: QuickSpec {
                 }
                 
                 it("updates only dirty properties") {
-                    stubRequest("PATCH", "http://example.com/test_subjects/3").withBody("{\"string_property\":\"updated\"}").andReturn(200).withBody("{ \"id\": 3 }")
+                    stubRequest("PATCH", "http://example.com/test_subjects/3")
+                        .withBody("{\"id\":3,\"string_property\":\"updated\"}")
+                        .andReturn(200).withBody("{\"id\":3,\"string_property\":\"updated\"}")
+                    
                     var called = false
                     
                     let object = TestSubject()
