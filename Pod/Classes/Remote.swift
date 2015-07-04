@@ -21,7 +21,7 @@ public enum RESTAction {
 
 public class RemoteClass {
     let subject: Lunch.Type
-    
+    var nestedUnder = [String: Int]()
     init(subject: Lunch.Type) {
         self.subject = subject
     }
@@ -38,17 +38,22 @@ public class RemoteClass {
         var underscoreName = subjectClassNameUnderscore()
         underscoreName = underscoreName.pluralize()
         
+        var nesting = ""
+        for (model, id) in nestedUnder {
+            nesting += "\(model.pluralize())/\(id)/"
+        }
+        
         switch action {
         case .SHOW, .UPDATE, .DESTROY:
             assert(remoteId != nil, "You need an remoteId for this action")
-            return "\(underscoreName)/\(remoteId!)"
+            return "\(nesting)\(underscoreName)/\(remoteId!)"
         default:
-            return underscoreName
+            return "\(nesting)\(underscoreName)"
         }
     }
     
     func urlForAction(action: RESTAction, remoteId: Int?) -> String {
-        Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders?.updateValue("application/json", forKey: "Accept")
+    Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders?.updateValue("application/json", forKey: "Accept")
         
         return "\(Options.baseUrl!)/\(pathForAction(action, remoteId: remoteId))"
     }
@@ -74,6 +79,9 @@ public class RemoteClass {
         }
     }
     
+    public func find<T: Lunch>(identifier: NSNumber, _ callback: (T?) -> ()) {
+        find(Int(identifier), callback)
+    }
     public func find<T: Lunch>(identifier: Int, _ callback: (T?) -> ()) {
         let url = urlForAction(.SHOW, remoteId: identifier)
         Alamofire.request(.GET, URLString: url, encoding: .JSON).responseJSON { (request, response, json, error) in
@@ -106,6 +114,10 @@ public class Remote: NSObject {
     
     deinit {
         removePropertyObservers()
+    }
+    
+    func subjectClassNameUnderscore() -> String {
+        return NSStringFromClass(subjectClass()).componentsSeparatedByString(".").last!.underscoreCase()
     }
     
     func subjectClass() -> Lunch.Type {
@@ -164,6 +176,14 @@ public class Remote: NSObject {
         for (key, value) in attributeChanges {
             assignSubjectAttribute(key, withValue: value)
         }
+    }
+    
+    // MARK: Accociations
+    
+    public func accociated(accociation: Lunch.Type) -> RemoteClass {
+        let accociateRemote = RemoteClass(subject: accociation)
+        accociateRemote.nestedUnder[subjectClassNameUnderscore()] = id
+        return accociateRemote
     }
     
     // MARK: Dirty attributes

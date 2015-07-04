@@ -27,12 +27,25 @@ class ViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("reuse", forIndexPath: indexPath) as UITableViewCell
-        let post = posts[indexPath.row]
+        let post = postFor(indexPath)
         
         cell.textLabel?.text = post.title
         cell.detailTextLabel?.text = post.body
 
         return cell
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        performSegueWithIdentifier("post-detail", sender: nil)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let destination = segue.destinationViewController as! PostDetailViewController
+        destination.post = postFor(tableView.indexPathForSelectedRow!)
+    }
+    
+    private func postFor(indexPath: NSIndexPath) -> Post {
+        return posts[indexPath.row]
     }
 
 }
