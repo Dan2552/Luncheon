@@ -13,7 +13,7 @@ DEPENDENCIES:
   - Luncheon (from `../`)
   - Nimble (= 2.0.0-rc.1)
   - Nocilla
-  - Placemat (from `https://github.com/Dan2552/Placemat.git`, branch `swift2`)
+  - Placemat (from `https://github.com/Dan2552/Placemat.git`)
   - Quick (~> 0.4)
 
 EXTERNAL SOURCES:
@@ -23,7 +23,6 @@ EXTERNAL SOURCES:
   Luncheon:
     :path: "../"
   Placemat:
-    :branch: swift2
     :git: https://github.com/Dan2552/Placemat.git
 
 CHECKOUT OPTIONS:
@@ -31,7 +30,7 @@ CHECKOUT OPTIONS:
     :commit: e1045f0e7713938320dbb5fef05166f7d6ef829a
     :git: git@github.com:Alamofire/Alamofire.git
   Placemat:
-    :commit: 9c9cbe86302f5ebdcc860f54a2fc6bf38f7d3f3a
+    :commit: 953ae1fb4d45ae5a0231154f880c0910d61ef507
     :git: https://github.com/Dan2552/Placemat.git
 
 SPEC CHECKSUMS:
@@ -39,7 +38,7 @@ SPEC CHECKSUMS:
   Luncheon: 4f1bfba262fbfc96e58f83681a9c730aabe67a46
   Nimble: 9572458605e65c9fc5a56754ab19a970f6ab5a88
   Nocilla: ae0a2b05f3087b473624ac2b25903695df51246a
-  Placemat: 3d9edcd7fda37a65c9128a266094861bbe8e9c55
+  Placemat: 49057e8f5558f67a8a49b4b3cbb61314c55eb6d5
   Quick: 2286bfff349102670c6d2dafd0d2cefab42f5f0b
 
 COCOAPODS: 0.38.0.beta.1
