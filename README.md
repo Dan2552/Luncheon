@@ -104,7 +104,6 @@ it, simply add the following line to your Podfile:
 
 ```ruby
 pod "Luncheon", git: "https://github.com/Dan2552/Luncheon.git"
-pod "Placemat", git: "https://github.com/Dan2552/Placemat.git"
 ```
 
 ## Main Contributors
