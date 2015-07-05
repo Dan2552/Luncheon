@@ -30,7 +30,7 @@ CHECKOUT OPTIONS:
     :commit: e1045f0e7713938320dbb5fef05166f7d6ef829a
     :git: git@github.com:Alamofire/Alamofire.git
   Placemat:
-    :commit: 953ae1fb4d45ae5a0231154f880c0910d61ef507
+    :commit: acea095ebd9b0308dce1f3f292f6031f0ac42ca9
     :git: https://github.com/Dan2552/Placemat.git
 
 SPEC CHECKSUMS:
