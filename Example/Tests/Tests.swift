@@ -13,20 +13,7 @@ import Luncheon
 class LuncheonSpec: QuickSpec {
     override func spec() {
     
-        var modelSubclass = LuncheonSubclass()
-
-        describe("initWithAttributes:") {
-            let attributes = [
-                "string_property": "wqijr320",
-                "number_property": 35204
-            ]
-            it("makes a new instance with the given property values") {
-                let anotherInstance = LuncheonSubclass(attributes: attributes)
-                
-                expect(anotherInstance.stringProperty).to(equal("wqijr320"))
-                expect(anotherInstance.numberProperty).to(equal(35204))
-            }
-        }
+        let modelSubclass = TestSubject()
         
         describe("attributes") {
             it("contains properties defined in the model") {
@@ -41,7 +28,7 @@ class LuncheonSpec: QuickSpec {
                 expect(stringPropertyValue).to(equal("string property value"))
             }
             it("returns 'id' for the property 'remote_id'") {
-                modelSubclass.remoteId = 324
+                modelSubclass.remote.id = 324
                 let attributes = modelSubclass.attributes()
                 let value = attributes["id"] as! Int
                 expect(value).to(equal(324))
@@ -62,7 +49,7 @@ class LuncheonSpec: QuickSpec {
             }
             it("sets 'id' property to 'remote_id'") {
                 modelSubclass.assignAttribute("id", withValue: 2)
-                expect(modelSubclass.remoteId).to(equal(2))
+                expect(modelSubclass.remote.id).to(equal(2))
             }
         }
         
@@ -82,7 +69,7 @@ class LuncheonSpec: QuickSpec {
                     "id": 6
                 ] as [String: NSObject]
                 modelSubclass.assignAttributes(newValues)
-                expect(modelSubclass.remoteId).to(equal(6))
+                expect(modelSubclass.remote.id).to(equal(6))
             }
         }
         

@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		374AD3021B23B80C00647A9A /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374AD3011B23B80C00647A9A /* Post.swift */; };
-		37A026731B234F2100784B29 /* LuncheonSubclass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A0266F1B234F2100784B29 /* LuncheonSubclass.swift */; };
+		37A026731B234F2100784B29 /* TestSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A0266F1B234F2100784B29 /* TestSubject.swift */; };
 		37A026741B234F2100784B29 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A026701B234F2100784B29 /* Tests.swift */; };
 		37A026751B234F2100784B29 /* DirtyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A026711B234F2100784B29 /* DirtyTests.swift */; };
 		37A026761B234F2100784B29 /* RequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A026721B234F2100784B29 /* RequestTests.swift */; };
@@ -18,6 +18,9 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		62CFB0F34E77D8F0BBEA0FC4 /* Pods_Luncheon_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99363F68D7811100FFAC490F /* Pods_Luncheon_Example.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		ABB1924A1B486BD100BE1AD0 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB192491B486BD100BE1AD0 /* Comment.swift */; };
+		ABB1924C1B4873E100BE1AD0 /* PostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB1924B1B4873E100BE1AD0 /* PostDetailViewController.swift */; };
+		ABB1924E1B48959300BE1AD0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB1924D1B48959300BE1AD0 /* User.swift */; };
 		C2570B2E919F15A05FD9344E /* Pods_Luncheon_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0853FF2F15507FBB7F4C3278 /* Pods_Luncheon_Tests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -35,7 +38,7 @@
 		0853FF2F15507FBB7F4C3278 /* Pods_Luncheon_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Luncheon_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2128663496060F5C0156F200 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		374AD3011B23B80C00647A9A /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
-		37A0266F1B234F2100784B29 /* LuncheonSubclass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LuncheonSubclass.swift; sourceTree = "<group>"; };
+		37A0266F1B234F2100784B29 /* TestSubject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSubject.swift; sourceTree = "<group>"; };
 		37A026701B234F2100784B29 /* Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		37A026711B234F2100784B29 /* DirtyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirtyTests.swift; sourceTree = "<group>"; };
 		37A026721B234F2100784B29 /* RequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestTests.swift; sourceTree = "<group>"; };
@@ -53,6 +56,9 @@
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		99363F68D7811100FFAC490F /* Pods_Luncheon_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Luncheon_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A5BABC75D874D5C4DD3F37F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		ABB192491B486BD100BE1AD0 /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		ABB1924B1B4873E100BE1AD0 /* PostDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDetailViewController.swift; sourceTree = "<group>"; };
+		ABB1924D1B48959300BE1AD0 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C370D9B1B002CC980005A785 /* Pods-Luncheon_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Luncheon_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Luncheon_Tests/Pods-Luncheon_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		E1C8AD8D9AF186BC82A11D13 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCBC7453FB028E1CADB8AAFB /* Pods-Luncheon_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Luncheon_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Luncheon_Example/Pods-Luncheon_Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -102,10 +108,10 @@
 		607FACD21AFB9204008FA782 /* Example for Luncheon */ = {
 			isa = PBXGroup;
 			children = (
-				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
-				607FACD71AFB9204008FA782 /* ViewController.swift */,
-				374AD3011B23B80C00647A9A /* Post.swift */,
-				607FACD91AFB9204008FA782 /* Main.storyboard */,
+				ABB192511B4895DB00BE1AD0 /* app */,
+				ABB1924F1B48959C00BE1AD0 /* models */,
+				ABB192501B4895A900BE1AD0 /* controllers */,
+				ABB192521B4895F500BE1AD0 /* views */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
@@ -125,7 +131,7 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				37A0266F1B234F2100784B29 /* LuncheonSubclass.swift */,
+				37A0266F1B234F2100784B29 /* TestSubject.swift */,
 				37A026701B234F2100784B29 /* Tests.swift */,
 				37A026711B234F2100784B29 /* DirtyTests.swift */,
 				37A026721B234F2100784B29 /* RequestTests.swift */,
@@ -160,6 +166,41 @@
 				0853FF2F15507FBB7F4C3278 /* Pods_Luncheon_Tests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		ABB1924F1B48959C00BE1AD0 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				374AD3011B23B80C00647A9A /* Post.swift */,
+				ABB192491B486BD100BE1AD0 /* Comment.swift */,
+				ABB1924D1B48959300BE1AD0 /* User.swift */,
+			);
+			name = models;
+			sourceTree = "<group>";
+		};
+		ABB192501B4895A900BE1AD0 /* controllers */ = {
+			isa = PBXGroup;
+			children = (
+				607FACD71AFB9204008FA782 /* ViewController.swift */,
+				ABB1924B1B4873E100BE1AD0 /* PostDetailViewController.swift */,
+			);
+			name = controllers;
+			sourceTree = "<group>";
+		};
+		ABB192511B4895DB00BE1AD0 /* app */ = {
+			isa = PBXGroup;
+			children = (
+				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
+			);
+			name = app;
+			sourceTree = "<group>";
+		};
+		ABB192521B4895F500BE1AD0 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				607FACD91AFB9204008FA782 /* Main.storyboard */,
+			);
+			name = views;
 			sourceTree = "<group>";
 		};
 		AEF75458EC364238E3ABD4BC /* Pods */ = {
@@ -223,7 +264,8 @@
 		607FACC81AFB9204008FA782 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
@@ -374,7 +416,10 @@
 			files = (
 				374AD3021B23B80C00647A9A /* Post.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
+				ABB1924E1B48959300BE1AD0 /* User.swift in Sources */,
+				ABB1924C1B4873E100BE1AD0 /* PostDetailViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				ABB1924A1B486BD100BE1AD0 /* Comment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -383,7 +428,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				37A026761B234F2100784B29 /* RequestTests.swift in Sources */,
-				37A026731B234F2100784B29 /* LuncheonSubclass.swift in Sources */,
+				37A026731B234F2100784B29 /* TestSubject.swift in Sources */,
 				37A026741B234F2100784B29 /* Tests.swift in Sources */,
 				37A026751B234F2100784B29 /* DirtyTests.swift in Sources */,
 			);
@@ -440,6 +485,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -508,6 +554,7 @@
 				INFOPLIST_FILE = Luncheon/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -520,6 +567,7 @@
 				INFOPLIST_FILE = Luncheon/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -539,6 +587,7 @@
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Luncheon_Example.app/Luncheon_Example";
 			};
@@ -555,6 +604,7 @@
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Luncheon_Example.app/Luncheon_Example";
 			};
