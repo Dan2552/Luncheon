@@ -116,7 +116,7 @@ public class Remote: NSObject {
         removePropertyObservers()
     }
     
-    func subjectClassNameUnderscore() -> String {
+    public func subjectClassNameUnderscore() -> String {
         return NSStringFromClass(subjectClass()).componentsSeparatedByString(".").last!.underscoreCase()
     }
     
