@@ -243,7 +243,7 @@ public class Remote: NSObject {
         isKVOEnabled = false
     }
     
-    override public func observeValueForKeyPath(keyPath: String?, ofObject: AnyObject?, change: [NSObject : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if changedAttributes[keyPath!] != nil { return }
         let old = change!["old"]
         changedAttributes[keyPath!] = old
