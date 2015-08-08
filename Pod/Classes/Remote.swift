@@ -63,11 +63,13 @@ public class RemoteClass {
     public func all<T: Lunch>(callback: ([T])->()) {
         let url = urlForAction(.INDEX, remoteId: nil)
         
-        Alamofire.request(.GET, URLString: url, parameters: nil, encoding: .JSON).responseJSON { (request, response, json, error) in
-            if error != nil {
-                Options.errorHandler(error: error, statusCode: response?.statusCode, object: nil)
+        Alamofire.request(.GET, url, parameters: nil, encoding: .JSON).responseJSON { (request, response, result) in
+            if result.error != nil {
+                Options.errorHandler(error: result.error, statusCode: response?.statusCode, object: nil)
                 return
             }
+            
+            let json = result.value
             if let response = json as? [AnyObject] {
                 let models: [T] = response.map { attributes in
                     let model = T()
@@ -84,12 +86,12 @@ public class RemoteClass {
     }
     public func find<T: Lunch>(identifier: Int, _ callback: (T?) -> ()) {
         let url = urlForAction(.SHOW, remoteId: identifier)
-        Alamofire.request(.GET, URLString: url, encoding: .JSON).responseJSON { (request, response, json, error) in
-            if error != nil {
-                Options.errorHandler(error: error, statusCode: response?.statusCode, object: nil)
+        Alamofire.request(.GET, url, encoding: .JSON).responseJSON { (request, response, result) in
+            if result.error != nil {
+                Options.errorHandler(error: result.error, statusCode: response?.statusCode, object: nil)
                 return
             }
-            
+            let json = result.value
             if let response = json as? [String: AnyObject] {
                 let model = T()
                 model.assignAttributes(response)
@@ -263,13 +265,14 @@ public class Remote: NSObject {
     
     public func reload<T: Lunch>(callback: (T?)->()) {
         let url = remoteClassInstance().urlForAction(.SHOW, remoteId: id)
-        
-        Alamofire.request(.GET, URLString: url, encoding: .JSON).responseJSON { (request, response, json, error) in
-            if error != nil {
-                Options.errorHandler(error: error, statusCode: response?.statusCode, object: nil)
+
+        Alamofire.request(.GET, url, encoding: .JSON).responseJSON { (request, response, result) in
+            if result.error != nil {
+                Options.errorHandler(error: result.error, statusCode: response?.statusCode, object: nil)
                 return
             }
             
+            let json = result.value
             if let response = json as? [String: AnyObject] {
                 let model = T()
                 model.assignAttributes(response)
@@ -288,12 +291,13 @@ public class Remote: NSObject {
         let method: Alamofire.Method = (action == .CREATE) ? .POST : .PATCH
         
         print("calling \(method) \(url) with params: \(parameters)")
-        Alamofire.request(method, URLString: url, parameters: parameters, encoding: .JSON).responseJSON { (request, response, json, error) in
-            if error != nil {
-                Options.errorHandler(error: error, statusCode: response?.statusCode, object: nil)
+        Alamofire.request(method, url, parameters: parameters, encoding: .JSON).responseJSON { (request, response, result) in
+            if result.error != nil {
+                Options.errorHandler(error: result.error, statusCode: response?.statusCode, object: nil)
                 return
             }
             
+            let json = result.value
             if let response = json as? [String: AnyObject] {
                 let model = T()
                 model.assignAttributes(response)
@@ -306,9 +310,9 @@ public class Remote: NSObject {
     
     public func destroy(callback: () -> ()) {
         let url = remoteClassInstance().urlForAction(.DESTROY, remoteId:id)
-        Alamofire.request(.DELETE, URLString: url, encoding: .JSON).responseJSON { (request, response, json, error) in
-            if error != nil {
-                Options.errorHandler(error: error, statusCode: response?.statusCode, object: nil)
+        Alamofire.request(.DELETE, url, encoding: .JSON).responseJSON { (request, response, result) in
+            if result.error != nil {
+                Options.errorHandler(error: result.error, statusCode: response?.statusCode, object: nil)
                 return
             }
             if response?.statusCode > 399 {

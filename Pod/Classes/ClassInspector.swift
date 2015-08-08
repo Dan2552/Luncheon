@@ -26,9 +26,6 @@ public class ClassInspector {
             let property : objc_property_t = properties[i]
             let propertyName = NSString(UTF8String: property_getName(property))!
             
-            //TODO: Use this for attribute type checks
-            //let propertyAttr = NSString(UTF8String: property_getAttributes(property))!
-            
             propertyNames.append(propertyName as String)
         }
         free(properties)
