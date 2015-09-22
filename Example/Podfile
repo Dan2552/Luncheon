@@ -2,8 +2,6 @@ source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
 target 'Luncheon_Example', exclusive: true do
-  pod 'Placemat', '~> 0.1'
-  pod 'Alamofire', git: "git@github.com:Alamofire/Alamofire.git", branch: "swift-2.0"
   pod "Luncheon", path: "../"
 end
 
