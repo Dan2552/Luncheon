@@ -123,7 +123,7 @@ public class Remote: NSObject {
     }
     
     public func subjectClassNameUnderscore() -> String {
-        return NSStringFromClass(subjectClass()).componentsSeparatedByString(".").last!.underscoreCase()
+        return _stdlib_getDemangledTypeName(subject).componentsSeparatedByString(".").last!.underscoreCase()
     }
     
     func subjectClass() -> Lunch.Type {
