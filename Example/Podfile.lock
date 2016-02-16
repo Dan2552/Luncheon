@@ -1,43 +1,29 @@
 PODS:
   - Alamofire (2.0.2)
-  - Luncheon (0.1.0):
+  - Luncheon (0.2.0):
     - Alamofire (~> 2.0)
     - Placemat (~> 0.2)
-  - Nimble (2.0.0-rc.3)
+  - Nimble (3.1.0)
   - Nocilla (0.10.0)
   - Placemat (0.2.0)
-  - Quick (0.6.0)
+  - Quick (0.9.1)
 
 DEPENDENCIES:
   - Luncheon (from `../`)
-  - Nimble (from `https://github.com/Quick/Nimble`, branch `swift-2.0`)
+  - Nimble
   - Nocilla
-  - Quick (from `https://github.com/Quick/Quick`, branch `swift-2.0`)
+  - Quick
 
 EXTERNAL SOURCES:
   Luncheon:
     :path: "../"
-  Nimble:
-    :branch: swift-2.0
-    :git: https://github.com/Quick/Nimble
-  Quick:
-    :branch: swift-2.0
-    :git: https://github.com/Quick/Quick
-
-CHECKOUT OPTIONS:
-  Nimble:
-    :commit: a87c41424b2b8bc7821cf9e0352f87f53daf5263
-    :git: https://github.com/Quick/Nimble
-  Quick:
-    :commit: bfba21156d7b50d250f32424d0280511435206e6
-    :git: https://github.com/Quick/Quick
 
 SPEC CHECKSUMS:
   Alamofire: 8edbab00802a752bb5240cc2abe70e7e881488ad
-  Luncheon: dd1e91a5444719f7400820d082e5b5932fd6cc8f
-  Nimble: 2f64d173ad23dc39f10110840a1ed15f29ef75e8
+  Luncheon: 234eacfddec13142b9691976e9c51ff408f76403
+  Nimble: 79d40f4d69d47314229bbabacaa02b8838c779b9
   Nocilla: ae0a2b05f3087b473624ac2b25903695df51246a
   Placemat: 39c8446df51adaf193d8a06829909579a7fba721
-  Quick: aaa961333f0bec39bfefa4b759128e4eb39f0d0e
+  Quick: a5221fc21788b6aeda934805e68b061839bc3165
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.39.0

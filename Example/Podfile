@@ -8,7 +8,7 @@ end
 target 'Luncheon_Tests', exclusive: true do
   pod "Luncheon", path: "../"
 
-  pod 'Quick', git: 'https://github.com/Quick/Quick', branch: 'swift-2.0'
-  pod 'Nimble', git: 'https://github.com/Quick/Nimble', branch: 'swift-2.0'
+  pod 'Quick'
+  pod 'Nimble'
   pod 'Nocilla'
 end
