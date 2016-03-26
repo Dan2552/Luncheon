@@ -22,6 +22,10 @@ public extension Lunch {
     static var remote: RemoteClass {
         return RemoteClass(subject: self)
     }
+
+    static func className() -> String {
+        return String(self).componentsSeparatedByString(".").last!
+    }
     
     public var remote: Remote {
         if let r = objc_getAssociatedObject(self, &remoteAssociationKey) as? Remote {

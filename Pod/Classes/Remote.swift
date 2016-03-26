@@ -25,19 +25,14 @@ public class RemoteClass {
     init(subject: Lunch.Type) {
         self.subject = subject
     }
-    
-    func subjectClassNameUnderscore() -> String {
-        return NSStringFromClass(subject).componentsSeparatedByString(".").last!.underscoreCase()
-    }
-    
+
     func pathForAction(action: RESTAction, instance: Lunch) -> String {
         return self.pathForAction(action, remoteId: instance.remote.id!)
     }
     
     func pathForAction(action: RESTAction, remoteId: Int?) -> String {
-        var underscoreName = subjectClassNameUnderscore()
-        underscoreName = underscoreName.pluralize()
-        
+        let resourceName = subject.className().underscoreCase().pluralize()
+
         var nesting = ""
         for (model, id) in nestedUnder {
             nesting += "\(model.pluralize())/\(id)/"
@@ -46,9 +41,9 @@ public class RemoteClass {
         switch action {
         case .SHOW, .UPDATE, .DESTROY:
             assert(remoteId != nil, "You need an remoteId for this action")
-            return "\(nesting)\(underscoreName)/\(remoteId!)"
+            return "\(nesting)\(resourceName)/\(remoteId!)"
         default:
-            return "\(nesting)\(underscoreName)"
+            return "\(nesting)\(resourceName)"
         }
     }
     
@@ -122,10 +117,6 @@ public class Remote: NSObject {
         removePropertyObservers()
     }
     
-    public func subjectClassNameUnderscore() -> String {
-        return _stdlib_getDemangledTypeName(subject).componentsSeparatedByString(".").last!.underscoreCase()
-    }
-    
     func subjectClass() -> Lunch.Type {
         return object_getClass(subject) as! Lunch.Type
     }
@@ -188,7 +179,8 @@ public class Remote: NSObject {
     
     public func accociated(accociation: Lunch.Type) -> RemoteClass {
         let accociateRemote = RemoteClass(subject: accociation)
-        accociateRemote.nestedUnder[subjectClassNameUnderscore()] = id
+        let key = subject.dynamicType.className().underscoreCase()
+        accociateRemote.nestedUnder[key] = id
         return accociateRemote
     }
     
