@@ -69,7 +69,7 @@ public class ClassInspector {
         if name.hasPrefix("T@\"NSString\"") { return .NSString }
         if name.hasPrefix("T@\"NSDate\"") { return .NSDate }
         if name.hasPrefix("TB,") { return .BOOL }
-        if name.hasPrefix("Tq,N,V") { return .Integer }
+        if name.hasPrefix("Tq,N") { return .Integer }
         return .Other
     }
 }
