@@ -14,4 +14,9 @@ public struct Options {
     public static var errorHandler: (error: NSError?, statusCode: Int?, object: Lunch?)->() = { error, statusCode, object in
         if let e = error { Luncheon.Options.uiHandler.showErrorMessage(e.localizedDescription) }
     }
+    static var headers = [String: String]()
+    
+    public static func setHeader(key: String, value: String) {
+        headers[key] = value
+    }
 }
