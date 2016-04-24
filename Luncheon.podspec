@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "Luncheon"
-  s.version          = "0.2.0"
+  s.version          = "0.3.0"
   s.summary          = "REST model resource mapping. Time saving. Opinionated. Convention over configuration. Inspired by Rails and ActiveRecord."
   s.homepage         = "https://github.com/Dan2552/Luncheon"
   s.license          = 'MIT'
