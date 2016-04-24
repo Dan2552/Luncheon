@@ -10,6 +10,7 @@ import UIKit
 
 public struct Options {
     public static var baseUrl: String?
+    public static var verbose = false
     public static var uiHandler: UIDelegate = DefaultUIDelegate()
     public static var errorHandler: (error: NSError?, statusCode: Int?, object: Lunch?)->() = { error, statusCode, object in
         if let e = error { Luncheon.Options.uiHandler.showErrorMessage(e.localizedDescription) }

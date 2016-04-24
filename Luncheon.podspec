@@ -25,6 +25,6 @@ Pod::Spec.new do |s|
     'Luncheon' => ['Pod/Assets/*.png']
   }
 
-  s.dependency 'Alamofire', '~> 2.0'
+  s.dependency 'Alamofire', '~> 3.3'
   s.dependency 'Placemat', '~> 0.2'
 end

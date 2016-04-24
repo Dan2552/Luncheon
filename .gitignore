@@ -159,3 +159,5 @@ Pods
 
 # Orig files skipped
 *.orig
+
+Example/output

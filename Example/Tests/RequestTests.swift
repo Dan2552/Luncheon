@@ -30,7 +30,9 @@ class LuncheonRequestSpec: QuickSpec {
         describe("+all") {
             
             it("contains an empty array if there are no objects served from the REST API") {
-                stubRequest("GET", "http://example.com/test_subjects").andReturn(200).withBody("[]")
+                stubRequest("GET", "http://example.com/test_subjects")
+                    .andReturn(200)
+                    .withBody("[]")
 
                 var count = -1
                 
@@ -40,9 +42,11 @@ class LuncheonRequestSpec: QuickSpec {
                 
                 expect(count).toEventually(equal(0))
             }
-            
+
             it("fetches a list of the corresponding object from a REST API") {
-                stubRequest("GET", "http://example.com/test_subjects").andReturn(200).withBody("[ { \"stringProperty\": \"a\" }, { \"stringProperty\": \"b\" } ]")
+                stubRequest("GET", "http://example.com/test_subjects")
+                    .andReturn(200)
+                    .withBody("[ { \"stringProperty\": \"a\" }, { \"stringProperty\": \"b\" } ]")
                 
                 var count = -1
                 
@@ -58,12 +62,15 @@ class LuncheonRequestSpec: QuickSpec {
             
             describe("no internet") {
                 it("calls the error handler") {
-                    stubRequest("GET", "http://example.com/test_subjects").andFailWithError(NSError(domain: NSURLErrorDomain, code: NSURLErrorNotConnectedToInternet, userInfo: nil))
+                    stubRequest("GET", "http://example.com/test_subjects")
+                        .andFailWithError(NSError(domain: NSURLErrorDomain, code: NSURLErrorNotConnectedToInternet, userInfo: nil))
                     
                     var called = false
                     Luncheon.Options.errorHandler = { error, _, _ in
-                        expect(error!.domain).to(equal(NSURLErrorDomain))
-                        expect(error!.code).to(equal(NSURLErrorNotConnectedToInternet))
+                        expect(error!.domain)
+                            .to(equal(NSURLErrorDomain))
+                        expect(error!.code)
+                            .to(equal(NSURLErrorNotConnectedToInternet))
                         called = true
                     }
                     
@@ -71,7 +78,8 @@ class LuncheonRequestSpec: QuickSpec {
                         NSException(name:"nope", reason:"callback should not be called on failed request", userInfo:nil).raise()
                     }
                     
-                    expect(called).toEventually(beTrue())
+                    expect(called)
+                        .toEventually(beTrue())
                 }
             }
             
@@ -80,7 +88,8 @@ class LuncheonRequestSpec: QuickSpec {
         describe("+find") {
             
             it("returns a 404 'not found' error if there is no object served from the REST API") {
-                stubRequest("GET", "http://example.com/test_subjects/41").andReturn(404)
+                stubRequest("GET", "http://example.com/test_subjects/41")
+                    .andReturn(404)
                 
                 var called = false
                 
@@ -89,11 +98,14 @@ class LuncheonRequestSpec: QuickSpec {
                     called = true
                 }
                 
-                expect(called).toEventually(beTrue())
+                expect(called)
+                    .toEventually(beTrue())
             }
             
             it("fetches an instance of the corresponding object from a REST API") {
-                stubRequest("GET", "http://example.com/test_subjects/42").andReturn(200).withBody("{ \"stringProperty\": \"a\" }")
+                stubRequest("GET", "http://example.com/test_subjects/42")
+                    .andReturn(200)
+                    .withBody("{ \"stringProperty\": \"a\" }")
                 
                 var called = false
                 
@@ -102,11 +114,12 @@ class LuncheonRequestSpec: QuickSpec {
                     called = true
                 }
                 
-                expect(called).toEventually(beTrue())
+                expect(called)
+                    .toEventually(beTrue())
             }
             
         }
-        
+
         describe("-reload") {
             it("refreshes the instance's attributes from the REST API") {
                 stubRequest("GET", "http://example.com/test_subjects/42").andReturn(200).withBody("{ \"stringProperty\": \"a\" }")
@@ -142,7 +155,10 @@ class LuncheonRequestSpec: QuickSpec {
                 }
                 
                 it("posts all properties that are set") {
-                    stubRequest("POST", "http://example.com/test_subjects").withBody("{\"number_property\":5}").andReturn(201).withBody("{ \"id\": 4 }")
+                    stubRequest("POST", "http://example.com/test_subjects")
+                        .withBody("{\"number_property\":5}")
+                        .andReturn(201)
+                        .withBody("{ \"id\": 4 }")
                     
                     var called = false
                     
@@ -153,22 +169,26 @@ class LuncheonRequestSpec: QuickSpec {
                         called = true
                     }
                     
-                    expect(called).toEventually(beTrue())
+                    expect(called)
+                        .toEventually(beTrue())
                 }
             }
-            
+
             describe("with an id") {
                 it("updates existing records") {
-                    stubRequest("PATCH", "http://example.com/test_subjects/3").andReturn(200).withBody("{ \"id\": 3 }")
+                    stubRequest("PATCH", "http://example.com/test_subjects/3")
+                        .andReturn(200)
+                        .withBody("{ \"id\": 3 }")
+                    
                     var called = false
                     
                     let object = TestSubject()
                     object.remote.id = 3
-                    
                     object.remote.save { (object: TestSubject) in
                         expect(object.remote.id).to(equal(3))
                         called = true
                     }
+                    
                     expect(called).toEventually(beTrue())
                 }
                 
@@ -202,7 +222,7 @@ class LuncheonRequestSpec: QuickSpec {
                 
                 let object = TestSubject()
                 object.remote.id = 3
-                object.remote.destroy {
+                object.remote.destroy { (_: TestSubject?) in
                     called = true
                 }
                 

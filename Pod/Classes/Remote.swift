@@ -19,6 +19,50 @@ public enum RESTAction {
     case DESTROY
 }
 
+func request<T: Lunch>(method: Alamofire.Method, url: String, parameters: [String: AnyObject]? = nil, allowEmptyForStatusCodes: [Int] = [], handler: (object: T?, collection: [T]?)->()) {
+    let headers = Options.headers
+    
+    if Options.verbose {
+        print("LUNCHEON: calling \(method) \(url) with params: \(parameters)")
+    }
+    
+    Alamofire.request(method, url, parameters: parameters, encoding: .JSON, headers: headers).responseJSON { response in
+        var handleError = true
+        
+        if let statusCode = response.response?.statusCode {
+            handleError = !allowEmptyForStatusCodes.contains(statusCode)
+        }
+        
+        if let error = response.result.error where handleError {
+            Options.errorHandler(error: error, statusCode: response.response?.statusCode, object: nil)
+            return
+        }
+        
+        let value = response.result.value
+
+        // Single object
+        if let attributes = value as? [String: AnyObject] {
+            let model = T()
+            model.assignAttributes(attributes)
+            
+            handler(object: model, collection: nil)
+            
+        // Collection
+        } else if let collection = value as? [[String : AnyObject]] {
+            let models: [T] = collection.map { attributes in
+                let model = T()
+                model.assignAttributes(attributes)
+                return model
+            }
+            
+            handler(object: nil, collection: models)
+    
+        } else {
+            handler(object: nil, collection: nil)
+        }
+    }
+}
+
 public class RemoteClass {
     let subject: Lunch.Type
     var nestedUnder = [String: Int]()
@@ -54,26 +98,12 @@ public class RemoteClass {
     }
 
     // MARK: REST class methods
-
+    
     public func all<T: Lunch>(callback: ([T])->()) {
         let url = urlForAction(.INDEX, remoteId: nil)
-        let headers = Options.headers
-
-        Alamofire.request(.GET, url, parameters: nil, encoding: .JSON, headers: headers).responseJSON { (request, response, result) in
-            if result.error != nil {
-                Options.errorHandler(error: result.error as? NSError, statusCode: response?.statusCode, object: nil)
-                return
-            }
-
-            let json = result.value
-            if let response = json as? [AnyObject] {
-                let models: [T] = response.map { attributes in
-                    let model = T()
-                    model.assignAttributes(attributes as! [String : AnyObject])
-                    return model
-                }
-                callback(models)
-            }
+        
+        request(.GET, url: url) { _, collection in
+            callback(collection!)
         }
     }
 
@@ -82,25 +112,9 @@ public class RemoteClass {
     }
     public func find<T: Lunch>(identifier: Int, _ callback: (T?) -> ()) {
         let url = urlForAction(.SHOW, remoteId: identifier)
-        let headers = Options.headers
 
-        Alamofire.request(.GET, url, encoding: .JSON, headers: headers).responseJSON { (request, response, result) in
-            if response?.statusCode == 404 {
-                callback(nil)
-                return
-            }
-            if result.error != nil {
-                Options.errorHandler(error: result.error as? NSError, statusCode: response?.statusCode, object: nil)
-                return
-            }
-            let json = result.value
-            if let response = json as? [String: AnyObject] {
-                let model = T()
-                model.assignAttributes(response)
-                callback(model)
-            } else {
-                callback(nil)
-            }
+        request(.GET, url: url, allowEmptyForStatusCodes: [404]) { object, _ in
+            callback(object)
         }
     }
 }
@@ -199,10 +213,6 @@ public class Remote: NSObject {
         return keys
     }
 
-    // from server:
-    // Post(title: "hello")
-    //
-
     public func isDirty() -> Bool {
         return (!isKVOEnabled && nonNilAttributes().count > 0)
             || (isKVOEnabled && changedAttributes.count > 0)
@@ -264,22 +274,9 @@ public class Remote: NSObject {
 
     public func reload<T: Lunch>(callback: (T?)->()) {
         let url = remoteClassInstance().urlForAction(.SHOW, remoteId: id)
-        let headers = Options.headers
 
-        Alamofire.request(.GET, url, encoding: .JSON, headers: headers).responseJSON { (request, response, result) in
-            if result.error != nil {
-                Options.errorHandler(error: result.error as? NSError, statusCode: response?.statusCode, object: nil)
-                return
-            }
-
-            let json = result.value
-            if let response = json as? [String: AnyObject] {
-                let model = T()
-                model.assignAttributes(response)
-                callback(model)
-            } else {
-                callback(nil)
-            }
+        request(.GET, url: url) { object, _ in
+            callback(object)
         }
     }
 
@@ -289,41 +286,17 @@ public class Remote: NSObject {
         let url = remoteClassInstance().urlForAction(action, remoteId:id)
         let parameters = attributesToSend()
         let method: Alamofire.Method = (action == .CREATE) ? .POST : .PATCH
-        let headers = Options.headers
-
-        print("calling \(method) \(url) with params: \(parameters)")
-        Alamofire.request(method, url, parameters: parameters, encoding: .JSON, headers: headers).responseJSON { (request, response, result) in
-            if result.error != nil {
-                Options.errorHandler(error: result.error as? NSError, statusCode: response?.statusCode, object: nil)
-                return
-            }
-
-            let json = result.value
-            if let response = json as? [String: AnyObject] {
-                let model = T()
-                model.assignAttributes(response)
-                callback(model)
-            } else {
-                //TODO: call error handler with our own error
-            }
+        
+        request(method, url: url, parameters: parameters) { object, _ in
+            callback(object!)
         }
     }
 
-    public func destroy(callback: () -> ()) {
+    public func destroy<T: Lunch>(callback: (T?)->()) {
         let url = remoteClassInstance().urlForAction(.DESTROY, remoteId:id)
-        let headers = Options.headers
 
-        Alamofire.request(.DELETE, url, encoding: .JSON, headers: headers).responseJSON { (request, response, result) in
-            if result.error != nil && response?.statusCode != 204 {
-                Options.errorHandler(error: result.error as? NSError, statusCode: response?.statusCode, object: nil)
-                return
-            }
-            if response?.statusCode > 399 {
-                //TODO
-                return
-            }
-            callback()
+        request(.DELETE, url: url) { object, _ in
+            callback(object)
         }
     }
-
 }

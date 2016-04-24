@@ -1,12 +1,12 @@
 PODS:
-  - Alamofire (2.0.2)
+  - Alamofire (3.3.1)
   - Luncheon (0.2.0):
-    - Alamofire (~> 2.0)
+    - Alamofire (~> 3.3)
     - Placemat (~> 0.2)
-  - Nimble (3.2.0)
+  - Nimble (4.0.1)
   - Nocilla (0.10.0)
   - Placemat (0.2.0)
-  - Quick (0.9.1)
+  - Quick (0.9.2)
 
 DEPENDENCIES:
   - Luncheon (from `../`)
@@ -19,11 +19,11 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Alamofire: 8edbab00802a752bb5240cc2abe70e7e881488ad
-  Luncheon: 234eacfddec13142b9691976e9c51ff408f76403
-  Nimble: 703854335d181df169bbca9c97117b5cf8c47c1d
+  Alamofire: 369bc67b6f5ac33ded3648d7bd21c5bfb91c2ecc
+  Luncheon: 26c9c5e3f844b93d1b2be3a92b9296ea8af0fafe
+  Nimble: 0f3c8b8b084cda391209c3c5efbb48bedeeb920a
   Nocilla: ae0a2b05f3087b473624ac2b25903695df51246a
   Placemat: 39c8446df51adaf193d8a06829909579a7fba721
-  Quick: a5221fc21788b6aeda934805e68b061839bc3165
+  Quick: 18d057bc66451eedd5d1c8dc99ba2a5db6e60226
 
 COCOAPODS: 0.39.0
