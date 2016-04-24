@@ -12,8 +12,16 @@ public struct Options {
     public static var baseUrl: String?
     public static var verbose = false
     public static var uiHandler: UIDelegate = DefaultUIDelegate()
-    public static var errorHandler: (error: NSError?, statusCode: Int?, object: Lunch?)->() = { error, statusCode, object in
-        if let e = error { Luncheon.Options.uiHandler.showErrorMessage(e.localizedDescription) }
+    public static var errorHandler: (error: NSError?, statusCode: Int?, object: Lunch?)->(Bool) = { error, statusCode, object in
+        var message = error?.localizedDescription
+        
+        if statusCode == 403 { message = message ?? "You don't have permission to retrieve this resource" }
+        
+        if let m = message {
+            Luncheon.Options.uiHandler.showErrorMessage(m)
+            return true
+        }
+        return false
     }
     static var headers = [String: String]()
     

@@ -33,9 +33,10 @@ func request<T: Lunch>(method: Alamofire.Method, url: String, parameters: [Strin
             handleError = !allowEmptyForStatusCodes.contains(statusCode)
         }
         
-        if let error = response.result.error where handleError {
-            Options.errorHandler(error: error, statusCode: response.response?.statusCode, object: nil)
-            return
+        if handleError {
+            if Options.errorHandler(error: response.result.error, statusCode: response.response?.statusCode, object: nil) {
+                return
+            }
         }
         
         let value = response.result.value

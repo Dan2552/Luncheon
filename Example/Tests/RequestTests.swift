@@ -13,6 +13,7 @@ import Luncheon
 
 class LuncheonRequestSpec: QuickSpec {
     override func spec() {
+        let defaultHandler = Luncheon.Options.errorHandler
         
         beforeEach() {
             LSNocilla.sharedInstance().start()
@@ -21,6 +22,7 @@ class LuncheonRequestSpec: QuickSpec {
         
         afterEach() {
             LSNocilla.sharedInstance().stop()
+            Luncheon.Options.errorHandler = defaultHandler
         }
         
         afterSuite() {
@@ -72,6 +74,8 @@ class LuncheonRequestSpec: QuickSpec {
                         expect(error!.code)
                             .to(equal(NSURLErrorNotConnectedToInternet))
                         called = true
+                        
+                        return true
                     }
                     
                     TestSubject.remote.all { (_: [TestSubject]) in
