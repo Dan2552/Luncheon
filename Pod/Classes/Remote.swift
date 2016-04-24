@@ -32,15 +32,15 @@ func request<T: Lunch>(method: Alamofire.Method, url: String, parameters: [Strin
         if let statusCode = response.response?.statusCode {
             handleError = !allowEmptyForStatusCodes.contains(statusCode)
         }
-        
+
+        let value = response.result.value
+
         if handleError {
-            if Options.errorHandler(error: response.result.error, statusCode: response.response?.statusCode, object: nil) {
+            if Options.errorHandler(error: response.result.error, status: response.response?.statusCode, value: value) {
                 return
             }
         }
         
-        let value = response.result.value
-
         // Single object
         if let attributes = value as? [String: AnyObject] {
             let model = T()
