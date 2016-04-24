@@ -174,6 +174,9 @@ public class Remote: NSObject {
     }
 
     public func assignSubjectAttribute(attributeName: String, withValue value: AnyObject?) {
+        var value = value
+        if let _ = value as? NSNull { value = nil }
+        
         var key = attributeName
         if key == "id", let id = value as? Int {
             self.id = id
