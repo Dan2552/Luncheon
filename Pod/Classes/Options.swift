@@ -12,6 +12,7 @@ public struct Options {
     public static var baseUrl: String?
     public static var verbose = false
     public static var uiHandler: UIDelegate = DefaultUIDelegate()
+    public static var localStoreAdapter: LocalStoreAdapter = RealmAdapter()
     public static var errorHandler = defaultErrorHandler
     static var headers = [
         "Accept": "application/json",

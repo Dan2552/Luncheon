@@ -2,6 +2,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
 target 'Luncheon_Example', exclusive: true do
+  pod "RealmSwift" # TODO: Remove when splitting adapter out!
   pod "Luncheon", path: "../"
 end
 

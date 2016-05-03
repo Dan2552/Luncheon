@@ -7,12 +7,18 @@ PODS:
   - Nocilla (0.10.0)
   - Placemat (0.2.0)
   - Quick (0.9.2)
+  - Realm (0.100.0):
+    - Realm/Headers (= 0.100.0)
+  - Realm/Headers (0.100.0)
+  - RealmSwift (0.100.0):
+    - Realm (= 0.100.0)
 
 DEPENDENCIES:
   - Luncheon (from `../`)
   - Nimble
   - Nocilla
   - Quick
+  - RealmSwift
 
 EXTERNAL SOURCES:
   Luncheon:
@@ -25,5 +31,7 @@ SPEC CHECKSUMS:
   Nocilla: ae0a2b05f3087b473624ac2b25903695df51246a
   Placemat: 39c8446df51adaf193d8a06829909579a7fba721
   Quick: 18d057bc66451eedd5d1c8dc99ba2a5db6e60226
+  Realm: b13b548e712d28a66678970c45cd245ebb94ba3b
+  RealmSwift: 1bb0ba2ceaa06b65d740b4f91bfa06e3fd1b805c
 
 COCOAPODS: 0.39.0
