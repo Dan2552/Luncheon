@@ -12,6 +12,7 @@ import Luncheon
 class TestSubject: NSObject, Lunch {
     dynamic var stringProperty: String?
     dynamic var numberProperty: NSNumber?
+    dynamic var remoteId: NSNumber?
     
     required override init() {
         super.init()

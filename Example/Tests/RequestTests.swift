@@ -129,7 +129,7 @@ class LuncheonRequestSpec: QuickSpec {
                 stubRequest("GET", "http://example.com/test_subjects/42").andReturn(200).withBody("{ \"stringProperty\": \"a\" }")
                 
                 let object = TestSubject()
-                object.remote.id = 42
+                object.remoteId = 42
                 object.stringProperty = "b"
                 
                 var called = false
@@ -152,7 +152,7 @@ class LuncheonRequestSpec: QuickSpec {
                     
                     var called = false
                     object.remote.save { (object: TestSubject) in
-                        expect(object.remote.id).to(equal(2))
+                        expect(object.remoteId).to(equal(2))
                         called = true
                     }
                     expect(called).toEventually(beTrue())
@@ -169,7 +169,7 @@ class LuncheonRequestSpec: QuickSpec {
                     let object = TestSubject()
                     object.numberProperty = 5
                     object.remote.save { (object: TestSubject) in
-                        expect(object.remote.id).to(equal(4))
+                        expect(object.remoteId).to(equal(4))
                         called = true
                     }
                     
@@ -187,9 +187,9 @@ class LuncheonRequestSpec: QuickSpec {
                     var called = false
                     
                     let object = TestSubject()
-                    object.remote.id = 3
+                    object.remoteId = 3
                     object.remote.save { (object: TestSubject) in
-                        expect(object.remote.id).to(equal(3))
+                        expect(object.remoteId).to(equal(3))
                         called = true
                     }
                     
@@ -204,10 +204,10 @@ class LuncheonRequestSpec: QuickSpec {
                     var called = false
                     
                     let object = TestSubject()
-                    object.remote.id = 3
+                    object.remoteId = 3
                     object.stringProperty = "updated"
                     object.remote.save { (object: TestSubject) in
-                        expect(object.remote.id).to(equal(3))
+                        expect(object.remoteId).to(equal(3))
                         called = true
                     }
                     
@@ -225,7 +225,7 @@ class LuncheonRequestSpec: QuickSpec {
                 var called = false
                 
                 let object = TestSubject()
-                object.remote.id = 3
+                object.remoteId = 3
                 object.remote.destroy { (_: TestSubject?) in
                     called = true
                 }

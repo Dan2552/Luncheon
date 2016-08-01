@@ -16,15 +16,20 @@ import Foundation
     
     func addObserver(anObserver: NSObject, forKeyPath keyPath: String, options: NSKeyValueObservingOptions, context: UnsafeMutablePointer<Void>)
     func removeObserver(anObserver: NSObject, forKeyPath keyPath: String)
+    
+    optional static func remoteIdentifier() -> String
 }
+
 private var remoteAssociationKey: UInt8 = 0
+private var localAssociationKey: UInt8 = 1
+
 public extension Lunch {
     static var remote: RemoteClass {
         return RemoteClass(subject: self)
     }
 
-    static func className() -> String {
-        return String(self).componentsSeparatedByString(".").last!
+    static var local: LocalClass {
+        return LocalClass(subject: self)
     }
     
     public var remote: Remote {
@@ -37,19 +42,13 @@ public extension Lunch {
         }
     }
     
-    func attributes() -> [String: AnyObject] {
-        return remote.subjectAttributes()
-    }
-    
-    func assignAttributes(attributes: [String: AnyObject]) {
-        remote.assignSubjectAttributes(attributes)
-    }
-    
-    func assignAttribute(name: String, withValue value: AnyObject?) {
-        remote.assignSubjectAttribute(name, withValue: value)
-    }
-    
-    func remoteObject() -> Remote {
-        return Remote(subject: self)
+    public var local: Local {
+        if let l = objc_getAssociatedObject(self, &localAssociationKey) as? Local {
+            return l
+        } else {
+            let l = Local(subject: self)
+            objc_setAssociatedObject(self, &localAssociationKey, l, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
+            return l
+        }
     }
 }

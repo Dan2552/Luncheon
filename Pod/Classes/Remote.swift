@@ -44,7 +44,7 @@ func request<T: Lunch>(method: Alamofire.Method, url: String, parameters: [Strin
         // Single object
         if let attributes = value as? [String: AnyObject] {
             let model = T()
-            model.assignAttributes(attributes)
+            model.remote.assignAttributes(attributes)
             
             handler(object: model, collection: nil)
             
@@ -52,7 +52,7 @@ func request<T: Lunch>(method: Alamofire.Method, url: String, parameters: [Strin
         } else if let collection = value as? [[String : AnyObject]] {
             let models: [T] = collection.map { attributes in
                 let model = T()
-                model.assignAttributes(attributes)
+                model.remote.assignAttributes(attributes)
                 return model
             }
             
@@ -66,7 +66,7 @@ func request<T: Lunch>(method: Alamofire.Method, url: String, parameters: [Strin
 
 public class RemoteClass {
     let subject: Lunch.Type
-    var nestedUnder = [String: Int]()
+    var nestedUnder = [String: AnyObject]()
     init(subject: Lunch.Type) {
         self.subject = subject
     }
@@ -75,8 +75,8 @@ public class RemoteClass {
         return self.pathForAction(action, remoteId: instance.remote.id!)
     }
 
-    func pathForAction(action: RESTAction, remoteId: Int?) -> String {
-        let resourceName = subject.className().underscoreCase().pluralize()
+    func pathForAction(action: RESTAction, remoteId: AnyObject?) -> String {
+        let resourceName = subjectClassName().underscoreCase().pluralize()
 
         var nesting = ""
         for (model, id) in nestedUnder {
@@ -92,7 +92,7 @@ public class RemoteClass {
         }
     }
 
-    func urlForAction(action: RESTAction, remoteId: Int?) -> String {
+    func urlForAction(action: RESTAction, remoteId: AnyObject?) -> String {
     Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders?.updateValue("application/json", forKey: "Accept")
 
         return "\(Options.baseUrl!)/\(pathForAction(action, remoteId: remoteId))"
@@ -118,48 +118,43 @@ public class RemoteClass {
             callback(object)
         }
     }
+    
+    private func subjectClassName() -> String {
+        return String(subject).componentsSeparatedByString(".").last!
+    }
 }
 
 public class Remote: NSObject {
     let subject: Lunch
+    let subjectClass: Lunch.Type
     var changedAttributes = [String: AnyObject]()
     var isKVOEnabled = false
 
-    public var id: Int?
+    public var id: AnyObject? {
+        return subject.valueForKey(remoteIdentifier())
+    }
 
-    init(subject: Lunch?) {
-        self.subject = subject!
+    init(subject: Lunch) {
+        self.subject = subject
+        self.subjectClass = object_getClass(subject) as! Lunch.Type
     }
 
     deinit {
         removePropertyObservers()
     }
-
-    func subjectClass() -> Lunch.Type {
-        return object_getClass(subject) as! Lunch.Type
+    
+    private func remoteIdentifier() -> String {
+        return subjectClass.remoteIdentifier?() ?? "remoteId"
     }
 
-    func subjectProperties() -> [String] {
-        return ClassInspector.properties(subjectClass())
+    public func attributes() -> [String: AnyObject] {
+        var attributes = subject.local.attributes()
+        attributes["id"] = attributes.removeValueForKey(remoteIdentifier())
+        return (attributes as NSDictionary).underscoreKeys()
     }
-
-    func subjectAttributes() -> [String: AnyObject] {
-        var attributes = [String: AnyObject]()
-        for property in subjectProperties() {
-            if let value = subject.valueForKey(property) {
-                attributes[property] = value
-            } else {
-                attributes[property] = NSNull()
-            }
-        }
-
-        attributes["id"] = self.id
-
-        return attributes
-    }
-
+    
     public func attributesToSend() -> [String: AnyObject] {
-        let attrs = subjectAttributes() as NSDictionary
+        let attrs = attributes() as NSDictionary
         let only: [String]
         if isKVOEnabled {
             let changes = changedAttributes as NSDictionary
@@ -174,33 +169,14 @@ public class Remote: NSObject {
         return (attributesToSend as NSDictionary).underscoreKeys()
     }
 
-    public func assignSubjectAttribute(attributeName: String, withValue value: AnyObject?) {
-        var value = value
-        if let _ = value as? NSNull { value = nil }
-        
-        var key = attributeName
-        if key == "id", let id = value as? Int {
-            self.id = id
-            return
-        }
-        key = key.camelCaseLower()
 
-        if subjectProperties().contains(key) {
-            subject.setValue(value, forKey: key)
-        }
-    }
 
-    public func assignSubjectAttributes(attributeChanges: [String: AnyObject]) {
-        for (key, value) in attributeChanges {
-            assignSubjectAttribute(key, withValue: value)
-        }
-    }
 
     // MARK: Accociations
 
     public func accociated(accociation: Lunch.Type) -> RemoteClass {
         let accociateRemote = RemoteClass(subject: accociation)
-        let key = subject.dynamicType.className().underscoreCase()
+        let key = subjectClassName().underscoreCase()
         accociateRemote.nestedUnder[key] = id
         return accociateRemote
     }
@@ -209,7 +185,7 @@ public class Remote: NSObject {
 
     func nonNilAttributes() -> [String] {
         var keys = [String]()
-        for (key, value) in subjectAttributes() {
+        for (key, value) in attributes() {
             if !(value is NSNull) {
                 keys.append(key)
             }
@@ -223,12 +199,12 @@ public class Remote: NSObject {
     }
 
     public func isChanged(propertyName: String) -> Bool {
-        if !isKVOEnabled && nonNilAttributes().contains(propertyName.camelCaseLower()) {
+        if !isKVOEnabled && nonNilAttributes().contains(propertyName.underscoreCase()) {
             return true
         }
 
         for (key, _) in changedAttributes {
-            if key.camelCaseLower() == propertyName.camelCaseLower() {
+            if key.underscoreCase() == propertyName.underscoreCase() {
                 return true
             }
         }
@@ -245,14 +221,15 @@ public class Remote: NSObject {
 
     // MARK: Observers
     func addPropertyObservers() {
-        for property in subjectProperties() {
+        if isKVOEnabled { return }
+        for property in subject.local.properties() {
             subject.addObserver(self, forKeyPath: property, options: [.New, .Old], context: nil)
         }
         isKVOEnabled = true
     }
 
     func removePropertyObservers() {
-        for property in subjectProperties() {
+        for property in subject.local.properties() {
             subject.removeObserver(self, forKeyPath: property)
         }
         isKVOEnabled = false
@@ -264,12 +241,8 @@ public class Remote: NSObject {
         changedAttributes[keyPath!] = old
     }
 
-    func remoteClass() -> Remote.Type {
-        return object_getClass(self) as! Remote.Type
-    }
-
     func remoteClassInstance() -> RemoteClass {
-        return RemoteClass(subject: subjectClass())
+        return RemoteClass(subject: subjectClass)
     }
 
 
@@ -287,7 +260,7 @@ public class Remote: NSObject {
 
     public func save<T: Lunch>(callback: (T)->()) {
         let action: RESTAction = (id == nil) ? .CREATE : .UPDATE
-        let url = remoteClassInstance().urlForAction(action, remoteId:id)
+        let url = remoteClassInstance().urlForAction(action, remoteId: id)
         let parameters = attributesToSend()
         let method: Alamofire.Method = (action == .CREATE) ? .POST : .PATCH
         
@@ -302,5 +275,25 @@ public class Remote: NSObject {
         request(.DELETE, url: url) { object, _ in
             callback(object)
         }
+    }
+
+
+    public func assignAttributes(attributeChanges: [String: AnyObject]) {
+        for (key, value) in attributeChanges {
+            assignAttribute(key, withValue: value)
+        }
+    }
+    
+    public func assignAttribute(attributeName: String, withValue value: AnyObject?) {
+        var attributeName = attributeName
+        if attributeName == "id" {
+            attributeName = remoteIdentifier()
+        }
+        subject.local.assignAttribute(attributeName, withValue: value)
+        addPropertyObservers()
+    }
+    
+    private func subjectClassName() -> String {
+        return String(subjectClass).componentsSeparatedByString(".").last!
     }
 }

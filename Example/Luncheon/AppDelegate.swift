@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         Luncheon.Options.baseUrl = "http://jsonplaceholder.typicode.com"
+        Luncheon.Options.verbose = true
         return true
     }
 
