@@ -9,12 +9,12 @@
 import ObjectiveC
 import UIKit
 
-public enum PropertyType: String {
-    case NSString = "NSString"
-    case NSDate = "NSDate"
-    case BOOL = "BOOL"
-    case Integer = "Integer"
-    case Other = "Other"
+public enum PropertyType {
+    case String
+    case Date
+    case Bool
+    case Int
+    case Other
 }
 
 public class ClassInspector {
@@ -66,10 +66,10 @@ public class ClassInspector {
     }
     
     private class func propertyNameToPropertyType(name: String) -> PropertyType {
-        if name.hasPrefix("T@\"NSString\"") { return .NSString }
-        if name.hasPrefix("T@\"NSDate\"") { return .NSDate }
-        if name.hasPrefix("TB,") { return .BOOL }
-        if name.hasPrefix("Tq,N") { return .Integer }
+        if name.hasPrefix("T@\"NSString\"") { return .String }
+        if name.hasPrefix("T@\"NSDate\"") { return .Date }
+        if name.hasPrefix("TB,") { return .Bool }
+        if name.hasPrefix("Tq,N") || name.hasPrefix("Tl,N") { return .Int }
         return .Other
     }
 }
