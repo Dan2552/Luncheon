@@ -1,6 +1,6 @@
 PODS:
   - Alamofire (3.3.1)
-  - Luncheon (0.3.0):
+  - Luncheon (0.4.0):
     - Alamofire (~> 3.3)
     - Placemat (~> 0.2)
   - Nimble (4.0.1)
@@ -20,7 +20,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: 369bc67b6f5ac33ded3648d7bd21c5bfb91c2ecc
-  Luncheon: 0cc291cb06ed01e90f168f65e4fdf45141f90be8
+  Luncheon: c546dc646d2b4bb80b20523686a08903077d4e85
   Nimble: 0f3c8b8b084cda391209c3c5efbb48bedeeb920a
   Nocilla: ae0a2b05f3087b473624ac2b25903695df51246a
   Placemat: 39c8446df51adaf193d8a06829909579a7fba721
