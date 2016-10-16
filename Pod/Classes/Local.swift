@@ -23,7 +23,7 @@ public class Local {
         self.subjectClass = object_getClass(subject) as! Lunch.Type
     }
     
-    func properties() -> [String] {
+    public func properties() -> [String] {
         return ClassInspector.properties(subjectClass)
     }
     
