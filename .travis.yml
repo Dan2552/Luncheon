@@ -1,11 +1,11 @@
 language: objective-c
-osx_image: xcode7.3
+osx_image: xcode8
 env:
   - LC_CTYPE=en_US.UTF-8 LANG=en_US.UTF-8
 before_install:
   - gem install cocoapods --no-rdoc --no-ri --no-document --quiet
   - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
-  - cd Example && pod install && cd ..
+  - cd Example && pod repo update && pod install && cd ..
 script:
   - set -o pipefail
   - xcodebuild -workspace Example/Luncheon.xcworkspace -scheme Luncheon-Example -sdk iphonesimulator
