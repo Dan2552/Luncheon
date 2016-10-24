@@ -1,11 +1,3 @@
-//
-//  AppDelegate.swift
-//  Luncheon
-//
-//  Created by Daniel Green on 06/06/2015.
-//  Copyright (c) 06/06/2015 Daniel Green. All rights reserved.
-//
-
 import UIKit
 import Luncheon
 

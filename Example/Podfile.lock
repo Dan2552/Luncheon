@@ -1,18 +1,17 @@
 PODS:
   - Alamofire (4.0.1)
-  - Luncheon (0.4.0):
+  - Luncheon (0.5.0-swift-3):
     - Alamofire (~> 4.0.1)
-    - Placemat (~> 0.3)
+    - Placemat (~> 0.5.0-swift-3)
   - Nimble (5.1.0)
   - Nocilla (0.11.0)
-  - Placemat (0.3.0)
+  - Placemat (0.5.0-swift-3)
   - Quick (0.10.0)
 
 DEPENDENCIES:
   - Luncheon (from `../`)
   - Nimble
   - Nocilla (from `https://github.com/pcantrell/Nocilla/`, branch `null-annotations`)
-  - Placemat (from `/Users/dan/projects/Placemat`)
   - Quick
 
 EXTERNAL SOURCES:
@@ -21,8 +20,6 @@ EXTERNAL SOURCES:
   Nocilla:
     :branch: null-annotations
     :git: https://github.com/pcantrell/Nocilla/
-  Placemat:
-    :path: "/Users/dan/projects/Placemat"
 
 CHECKOUT OPTIONS:
   Nocilla:
@@ -31,12 +28,12 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: 7682d43245de14874acd142ec137b144aa1dd335
-  Luncheon: 0f9c1df72f499d2215de21ce82025d1e7fe51f50
+  Luncheon: b8197194c9d6beffcff4196c9089bb8efdfb4c2b
   Nimble: 5ea121a2eda60440287054cde077fc0ad22227b3
   Nocilla: 7af7a386071150cc8aa5da4da97d060f049dd61c
-  Placemat: 2469767ef98a332a928fec85f2049fc189916802
+  Placemat: e9afa223494e3f3b1ae4252fb764bd5a8083fe5d
   Quick: 5d290df1c69d5ee2f0729956dcf0fd9a30447eaa
 
-PODFILE CHECKSUM: ebc4828a739fc92348615f7ae553511221d2725e
+PODFILE CHECKSUM: 0c26e12d81db70a783b0ab20ce601d7b00a5289d
 
 COCOAPODS: 1.1.1

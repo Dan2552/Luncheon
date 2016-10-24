@@ -1,15 +1,6 @@
-#
-# Be sure to run `pod lib lint Luncheon.podspec' to ensure this is a
-# valid spec and remove all comments before submitting the spec.
-#
-# Any lines starting with a # are optional, but encouraged
-#
-# To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
-#
-
 Pod::Spec.new do |s|
   s.name             = "Luncheon"
-  s.version          = "0.4.0"
+  s.version          = "0.5.0-swift-3"
   s.summary          = "REST model resource mapping. Time saving. Opinionated. Convention over configuration. Inspired by Rails and ActiveRecord."
   s.homepage         = "https://github.com/Dan2552/Luncheon"
   s.license          = 'MIT'
@@ -26,5 +17,5 @@ Pod::Spec.new do |s|
   }
 
   s.dependency 'Alamofire', '~> 4.0.1'
-  s.dependency 'Placemat', '~> 0.3'
+  s.dependency 'Placemat', '~> 0.5.0-swift-3'
 end

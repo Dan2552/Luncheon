@@ -106,7 +106,7 @@ pod "Luncheon", git: "https://github.com/Dan2552/Luncheon.git"
 
 ## Main Contributors
 
-- [Daniel Green](https://github.com/Dan2552)
+- [Daniel Inkpen](https://github.com/Dan2552)
 - [Tim Preuß](https://github.com/planerde)
 
 ## License
