@@ -12,9 +12,6 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes/**/*'
-  s.resource_bundles = {
-    'Luncheon' => ['Pod/Assets/*.png']
-  }
 
   s.dependency 'Alamofire', '~> 4.0.1'
   s.dependency 'Placemat', '~> 0.5.0-swift-3'
