@@ -26,7 +26,7 @@ class PostDetailViewController: UITableViewController {
             self.authorLabel.text = user?.name
         }
         
-        post.remote.accociated(Comment).all { (comments: [Comment]) in
+        post.remote.associated(Comment.self).all { (comments: [Comment]) in
             self.comments = comments
             self.populateComments()
         }

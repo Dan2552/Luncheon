@@ -9,11 +9,11 @@
 import Foundation
 
 public protocol UIDelegate {
-    func showErrorMessage(message: String)
+    func showErrorMessage(_ message: String)
 }
 
-public class DefaultUIDelegate: UIDelegate {
-    public func showErrorMessage(message: String) {
+open class DefaultUIDelegate: UIDelegate {
+    open func showErrorMessage(_ message: String) {
         UIAlertView(title: "", message: message, delegate: nil, cancelButtonTitle: "OK").show()
     }
 }

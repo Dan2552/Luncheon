@@ -31,7 +31,7 @@ class RemoteDirtySpec: QuickSpec {
                 let instance = TestSubject()
                 instance.stringProperty = "value1"
                 instance.stringProperty = "value2"
-                let oldValue : AnyObject? = instance.remote.oldValueFor("stringProperty")
+                let oldValue = instance.remote.oldValueFor("stringProperty")
                 expect(oldValue).to(beNil())
             }
         }

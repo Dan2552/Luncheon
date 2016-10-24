@@ -11,13 +11,13 @@ import Foundation
 @objc public protocol Lunch {
     init()
     
-    func valueForKey(key: String) -> AnyObject?
-    func setValue(value: AnyObject?, forKey key: String)
+    func value(forKey key: String) -> Any?
+    func setValue(_ value: Any?, forKey key: String)
     
-    func addObserver(anObserver: NSObject, forKeyPath keyPath: String, options: NSKeyValueObservingOptions, context: UnsafeMutablePointer<Void>)
-    func removeObserver(anObserver: NSObject, forKeyPath keyPath: String)
+    func addObserver(_ observer: NSObject, forKeyPath keyPath: String, options: NSKeyValueObservingOptions, context: UnsafeMutableRawPointer?)
+    func removeObserver(_ observer: NSObject, forKeyPath keyPath: String)
     
-    optional static func remoteIdentifier() -> String
+    @objc optional static func remoteIdentifier() -> String
 }
 
 private var remoteAssociationKey: UInt8 = 0

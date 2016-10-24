@@ -32,9 +32,9 @@ class LuncheonRequestSpec: QuickSpec {
         describe("+all") {
             
             it("contains an empty array if there are no objects served from the REST API") {
-                stubRequest("GET", "http://example.com/test_subjects")
-                    .andReturn(200)
-                    .withBody("[]")
+                _ = stubRequest("GET", "http://example.com/test_subjects" as LSMatcheable!)
+                        .andReturn(200)
+                        .withBody("[]" as LSHTTPBody?)
 
                 var count = -1
                 
@@ -46,9 +46,9 @@ class LuncheonRequestSpec: QuickSpec {
             }
 
             it("fetches a list of the corresponding object from a REST API") {
-                stubRequest("GET", "http://example.com/test_subjects")
-                    .andReturn(200)
-                    .withBody("[ { \"stringProperty\": \"a\" }, { \"stringProperty\": \"b\" } ]")
+                _ = stubRequest("GET", "http://example.com/test_subjects" as LSMatcheable!)
+                        .andReturn(200)
+                        .withBody("[ { \"stringProperty\": \"a\" }, { \"stringProperty\": \"b\" } ]" as LSHTTPBody?)
                 
                 var count = -1
                 
@@ -64,14 +64,16 @@ class LuncheonRequestSpec: QuickSpec {
             
             describe("no internet") {
                 it("calls the error handler") {
-                    stubRequest("GET", "http://example.com/test_subjects")
-                        .andFailWithError(NSError(domain: NSURLErrorDomain, code: NSURLErrorNotConnectedToInternet, userInfo: nil))
+                    _ = stubRequest("GET", "http://example.com/test_subjects" as LSMatcheable!)
+                            .andFailWithError(NSError(domain: NSURLErrorDomain,
+                                                      code: NSURLErrorNotConnectedToInternet,
+                                                      userInfo: nil))
                     
                     var called = false
                     Luncheon.Options.errorHandler = { error, _, _ in
-                        expect(error!.domain)
+                        expect(error!._domain)
                             .to(equal(NSURLErrorDomain))
-                        expect(error!.code)
+                        expect(error!._code)
                             .to(equal(NSURLErrorNotConnectedToInternet))
                         called = true
                         
@@ -79,7 +81,9 @@ class LuncheonRequestSpec: QuickSpec {
                     }
                     
                     TestSubject.remote.all { (_: [TestSubject]) in
-                        NSException(name:"nope", reason:"callback should not be called on failed request", userInfo:nil).raise()
+                        NSException(name: NSExceptionName("nope"),
+                                    reason:"callback should not be called on failed request",
+                                    userInfo:nil).raise()
                     }
                     
                     expect(called)
@@ -92,7 +96,7 @@ class LuncheonRequestSpec: QuickSpec {
         describe("+find") {
             
             it("returns a 404 'not found' error if there is no object served from the REST API") {
-                stubRequest("GET", "http://example.com/test_subjects/41")
+                _ = stubRequest("GET", "http://example.com/test_subjects/41" as LSMatcheable!)
                     .andReturn(404)
                 
                 var called = false
@@ -107,9 +111,9 @@ class LuncheonRequestSpec: QuickSpec {
             }
             
             it("fetches an instance of the corresponding object from a REST API") {
-                stubRequest("GET", "http://example.com/test_subjects/42")
+                _ = stubRequest("GET", "http://example.com/test_subjects/42" as LSMatcheable!)
                     .andReturn(200)
-                    .withBody("{ \"stringProperty\": \"a\" }")
+                    .withBody("{ \"stringProperty\": \"a\" }" as LSHTTPBody?)
                 
                 var called = false
                 
@@ -126,7 +130,9 @@ class LuncheonRequestSpec: QuickSpec {
 
         describe("-reload") {
             it("refreshes the instance's attributes from the REST API") {
-                stubRequest("GET", "http://example.com/test_subjects/42").andReturn(200).withBody("{ \"stringProperty\": \"a\" }")
+                _ = stubRequest("GET", "http://example.com/test_subjects/42" as LSMatcheable!)
+                    .andReturn(200)
+                    .withBody("{ \"stringProperty\": \"a\" }" as LSHTTPBody?)
                 
                 let object = TestSubject()
                 object.remoteId = 42
@@ -147,7 +153,9 @@ class LuncheonRequestSpec: QuickSpec {
             
             describe("no id") {
                 it("posts the record and we the object returned has an id") {
-                    stubRequest("POST", "http://example.com/test_subjects").andReturn(201).withBody("{ \"id\": 2 }")
+                    _ = stubRequest("POST", "http://example.com/test_subjects" as LSMatcheable!)
+                            .andReturn(201)
+                            .withBody("{ \"id\": 2 }" as LSHTTPBody?)
                     let object = TestSubject()
                     
                     var called = false
@@ -159,10 +167,10 @@ class LuncheonRequestSpec: QuickSpec {
                 }
                 
                 it("posts all properties that are set") {
-                    stubRequest("POST", "http://example.com/test_subjects")
-                        .withBody("{\"number_property\":5}")
-                        .andReturn(201)
-                        .withBody("{ \"id\": 4 }")
+                    _ = stubRequest("POST", "http://example.com/test_subjects" as LSMatcheable!)
+                            .withBody("{\"number_property\":5}" as LSMatcheable?)
+                            .andReturn(201)
+                            .withBody("{ \"id\": 4 }" as LSHTTPBody?)
                     
                     var called = false
                     
@@ -180,9 +188,9 @@ class LuncheonRequestSpec: QuickSpec {
 
             describe("with an id") {
                 it("updates existing records") {
-                    stubRequest("PATCH", "http://example.com/test_subjects/3")
-                        .andReturn(200)
-                        .withBody("{ \"id\": 3 }")
+                    _ = stubRequest("PATCH", "http://example.com/test_subjects/3" as LSMatcheable!)
+                            .andReturn(200)
+                            .withBody("{ \"id\": 3 }" as LSHTTPBody?)
                     
                     var called = false
                     
@@ -197,9 +205,10 @@ class LuncheonRequestSpec: QuickSpec {
                 }
                 
                 it("updates only dirty properties") {
-                    stubRequest("PATCH", "http://example.com/test_subjects/3")
-                        .withBody("{\"id\":3,\"string_property\":\"updated\"}")
-                        .andReturn(200).withBody("{\"id\":3,\"string_property\":\"updated\"}")
+                    _ = stubRequest("PATCH", "http://example.com/test_subjects/3" as LSMatcheable!)
+                            .withBody("{\"id\":3,\"string_property\":\"updated\"}" as LSMatcheable?)
+                            .andReturn(200)
+                            .withBody("{\"id\":3,\"string_property\":\"updated\"}" as LSHTTPBody?)
                     
                     var called = false
                     
@@ -221,7 +230,10 @@ class LuncheonRequestSpec: QuickSpec {
         
         describe("-destroy") {
             it("calls to delete the resource") {
-                stubRequest("DELETE", "http://example.com/test_subjects/3").andReturn(204).withBody("")
+                _ = stubRequest("DELETE", "http://example.com/test_subjects/3" as LSMatcheable!)
+                    .andReturn(204)
+                    .withBody("" as LSHTTPBody?)
+                
                 var called = false
                 
                 let object = TestSubject()
@@ -233,7 +245,5 @@ class LuncheonRequestSpec: QuickSpec {
                 expect(called).toEventually(beTrue())
             }
         }
-        
-//      describe("-action") {}
     }
 }

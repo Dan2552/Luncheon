@@ -8,13 +8,13 @@
 
 import Foundation
 
-public class LocalClass {
+open class LocalClass {
     init(subject: Lunch.Type) {
         
     }
 }
 
-public class Local {
+open class Local {
     let subject: Lunch
     let subjectClass: Lunch.Type
     
@@ -23,42 +23,37 @@ public class Local {
         self.subjectClass = object_getClass(subject) as! Lunch.Type
     }
     
-    public func properties() -> [String] {
+    open func properties() -> [String] {
         return ClassInspector.properties(subjectClass)
     }
     
-    public func attributes() -> [String: AnyObject] {
-        var attributes = [String: AnyObject]()
+    open func attributes() -> [String: Any] {
+        var attributes = [String: Any]()
         for property in properties() {
-            if let value = subject.valueForKey(property) {
+            if let value = subject.value(forKey: property) {
                 attributes[property] = value
             } else {
                 attributes[property] = NSNull()
             }
         }
-        
-//        attributes["id"] = self.id
-        
+
         return attributes
     }
     
     
-    public func assignAttributes(attributeChanges: [String: AnyObject]) {
+    open func assignAttributes(_ attributeChanges: [String: Any]) {
         for (key, value) in attributeChanges {
             assignAttribute(key, withValue: value)
         }
     }
     
-    public func assignAttribute(attributeName: String, withValue value: AnyObject?) {
+    open func assignAttribute(_ attributeName: String, withValue value: Any?) {
         var value = value
         if let _ = value as? NSNull { value = nil }
         
         var key = attributeName
-//        if key == "id", let id = value as? Int {
-//            self.id = id
-//            return
-//        }
-        key = key.camelCaseLower()
+        
+        key = key.camelCased(firstCharacterCase: .lower)
         
         if properties().contains(key) {
             subject.setValue(value, forKey: key)

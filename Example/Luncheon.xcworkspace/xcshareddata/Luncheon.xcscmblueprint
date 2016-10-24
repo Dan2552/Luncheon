@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "5699D7BBC330A22B2BEB58D7C8A9E96C15976911",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "E20C3583D46D1D5FF556AF88E02C4C2285D92E9D" : 9223372036854775807,
+    "5699D7BBC330A22B2BEB58D7C8A9E96C15976911" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "0C66C4BC-9BEE-4F88-9F71-0D543E983687",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "E20C3583D46D1D5FF556AF88E02C4C2285D92E9D" : "Placemat\/",
+    "5699D7BBC330A22B2BEB58D7C8A9E96C15976911" : "Luncheon\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Luncheon",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Example\/Luncheon.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Dan2552\/Luncheon.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "5699D7BBC330A22B2BEB58D7C8A9E96C15976911"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Dan2552\/Placemat.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E20C3583D46D1D5FF556AF88E02C4C2285D92E9D"
+    }
+  ]
+}

@@ -18,7 +18,7 @@ public struct Options {
         "Content-Type": "application/json"
     ]
     
-    public static func setHeader(key: String, value: String) {
+    public static func setHeader(_ key: String, value: String) {
         headers[key] = value
     }
 }

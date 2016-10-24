@@ -37,7 +37,7 @@ class LocalSpec: QuickSpec { override func spec() {
             let newValues = [
                 "string_property": "a1",
                 "number_property": 5
-            ]
+            ] as [String : Any]
             local.assignAttributes(newValues)
             
             expect(subject.stringProperty).to(equal("a1"))

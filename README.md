@@ -84,11 +84,11 @@ Grab an existing post and print its attributes:
 Post.remote.find(42) { post in println(post.attributes()) }
 ```
 
-Or some accociated comments on a post:
+Or some associated comments on a post:
 
 ```swift
 // GET /posts/42/comments
-post.remote.accociated(Comment).all { (comments: [Comment]) in
+post.remote.associated(Comment.self).all { (comments: [Comment]) in
     for comment in comments {
         println(comment.title)
     }

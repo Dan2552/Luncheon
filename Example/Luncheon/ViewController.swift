@@ -21,12 +21,12 @@ class ViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return posts.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuse", forIndexPath: indexPath) as UITableViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuse", for: indexPath) as UITableViewCell
         let post = postFor(indexPath)
         
         cell.textLabel?.text = post.title
@@ -35,17 +35,17 @@ class ViewController: UITableViewController {
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier("post-detail", sender: nil)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "post-detail", sender: nil)
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let destination = segue.destinationViewController as! PostDetailViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destination = segue.destination as! PostDetailViewController
         destination.post = postFor(tableView.indexPathForSelectedRow!)
     }
     
-    private func postFor(indexPath: NSIndexPath) -> Post {
-        return posts[indexPath.row]
+    fileprivate func postFor(_ indexPath: IndexPath) -> Post {
+        return posts[(indexPath as NSIndexPath).row]
     }
 
 }

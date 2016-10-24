@@ -12,31 +12,33 @@ import Alamofire
 
 
 public enum RESTAction {
-    case INDEX
-    case SHOW
-    case CREATE
-    case UPDATE
-    case DESTROY
+    case index
+    case show
+    case create
+    case update
+    case destroy
 }
 
-func request<T: Lunch>(method: Alamofire.Method, url: String, parameters: [String: AnyObject]? = nil, allowEmptyForStatusCodes: [Int] = [], handler: (object: T?, collection: [T]?)->()) {
+func request<T: Lunch>(_ method: Alamofire.HTTPMethod, url: String, parameters: Alamofire.Parameters? = nil, allowEmptyForStatusCodes: [Int] = [], handler: @escaping (_ object: T?, _ collection: [T]?)->()) {
     let headers = Options.headers
     
     if Options.verbose {
         print("LUNCHEON: calling \(method) \(url) with params: \(parameters)")
     }
-    
-    Alamofire.request(method, url, parameters: parameters, encoding: .JSON, headers: headers).responseJSON { response in
+
+    let responseHandler: (DataResponse<Any>)->() = { response in
         var handleError = true
         
         if let statusCode = response.response?.statusCode {
             handleError = !allowEmptyForStatusCodes.contains(statusCode)
         }
-
+        
         let value = response.result.value
-
+        
         if handleError {
-            if Options.errorHandler(error: response.result.error, status: response.response?.statusCode, value: value) {
+            if Options.errorHandler(response.result.error,
+                                    response.response?.statusCode,
+                                    value) {
                 return
             }
         }
@@ -46,9 +48,9 @@ func request<T: Lunch>(method: Alamofire.Method, url: String, parameters: [Strin
             let model = T()
             model.remote.assignAttributes(attributes)
             
-            handler(object: model, collection: nil)
+            handler(model, nil)
             
-        // Collection
+            // Collection
         } else if let collection = value as? [[String : AnyObject]] {
             let models: [T] = collection.map { attributes in
                 let model = T()
@@ -56,27 +58,38 @@ func request<T: Lunch>(method: Alamofire.Method, url: String, parameters: [Strin
                 return model
             }
             
-            handler(object: nil, collection: models)
-    
+            handler(nil, models)
+            
         } else {
-            handler(object: nil, collection: nil)
+            handler(nil, nil)
         }
     }
+    
+    Alamofire.request(url,
+                      method: method,
+                      parameters: parameters,
+                      encoding: JSONEncoding.default,
+                      headers: headers as HTTPHeaders)
+             .responseJSON(completionHandler: responseHandler)
+    
+//    Alamofire.request(method, url, parameters: parameters, encoding: .JSON, headers: headers).responseJSON { response in
+//
+//    }
 }
 
-public class RemoteClass {
+open class RemoteClass {
     let subject: Lunch.Type
-    var nestedUnder = [String: AnyObject]()
+    var nestedUnder = [String: Any]()
     init(subject: Lunch.Type) {
         self.subject = subject
     }
 
-    func pathForAction(action: RESTAction, instance: Lunch) -> String {
-        return self.pathForAction(action, remoteId: instance.remote.id!)
+    func pathForAction(_ action: RESTAction, instance: Lunch) -> String {
+        return pathForAction(action, remoteId: instance.remote.id!)
     }
 
-    func pathForAction(action: RESTAction, remoteId: AnyObject?) -> String {
-        let resourceName = subjectClassName().underscoreCase().pluralize()
+    func pathForAction(_ action: RESTAction, remoteId: Any?) -> String {
+        let resourceName = subjectClassName().underscoreCased().pluralize()
 
         var nesting = ""
         for (model, id) in nestedUnder {
@@ -84,7 +97,7 @@ public class RemoteClass {
         }
 
         switch action {
-        case .SHOW, .UPDATE, .DESTROY:
+        case .show, .update, .destroy:
             assert(remoteId != nil, "You need an remoteId for this action")
             return "\(nesting)\(resourceName)/\(remoteId!)"
         default:
@@ -92,46 +105,45 @@ public class RemoteClass {
         }
     }
 
-    func urlForAction(action: RESTAction, remoteId: AnyObject?) -> String {
-    Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders?.updateValue("application/json", forKey: "Accept")
-
+    func urlForAction(_ action: RESTAction, remoteId: Any?) -> String {
         return "\(Options.baseUrl!)/\(pathForAction(action, remoteId: remoteId))"
     }
 
     // MARK: REST class methods
     
-    public func all<T: Lunch>(callback: ([T])->()) {
-        let url = urlForAction(.INDEX, remoteId: nil)
-        
-        request(.GET, url: url) { _, collection in
+    open func all<T: Lunch>(_ callback: @escaping ([T])->()) {
+        let url = urlForAction(.index, remoteId: nil)
+
+        request(.get, url: url) { _, collection in
             callback(collection!)
         }
     }
 
-    public func find<T: Lunch>(identifier: NSNumber, _ callback: (T?) -> ()) {
+    open func find<T: Lunch>(_ identifier: NSNumber, _ callback: @escaping (T?) -> ()) {
         find(Int(identifier), callback)
     }
-    public func find<T: Lunch>(identifier: Int, _ callback: (T?) -> ()) {
-        let url = urlForAction(.SHOW, remoteId: identifier)
+    open func find<T: Lunch>(_ identifier: Int, _ callback: @escaping (T?) -> ()) {
+        let url = urlForAction(.show, remoteId: identifier as AnyObject?)
 
-        request(.GET, url: url, allowEmptyForStatusCodes: [404]) { object, _ in
+        request(.get, url: url, allowEmptyForStatusCodes: [404]) { object, _ in
             callback(object)
         }
     }
     
-    private func subjectClassName() -> String {
-        return String(subject).componentsSeparatedByString(".").last!
+    fileprivate func subjectClassName() -> String {
+        return String(describing: subject).components(separatedBy: ".").last!
     }
 }
 
-public class Remote: NSObject {
+open class Remote: NSObject {
     let subject: Lunch
     let subjectClass: Lunch.Type
-    var changedAttributes = [String: AnyObject]()
+    var changedAttributes = [String: Any]()
     var isKVOEnabled = false
-
-    public var id: AnyObject? {
-        return subject.valueForKey(remoteIdentifier())
+    private var context = 0
+    
+    open var id: Any? {
+        return subject.value(forKey: remoteIdentifier())
     }
 
     init(subject: Lunch) {
@@ -143,17 +155,17 @@ public class Remote: NSObject {
         removePropertyObservers()
     }
     
-    private func remoteIdentifier() -> String {
+    fileprivate func remoteIdentifier() -> String {
         return subjectClass.remoteIdentifier?() ?? "remoteId"
     }
 
-    public func attributes() -> [String: AnyObject] {
+    open func attributes() -> [String: AnyObject] {
         var attributes = subject.local.attributes()
-        attributes["id"] = attributes.removeValueForKey(remoteIdentifier())
+        attributes["id"] = attributes.removeValue(forKey: remoteIdentifier())
         return (attributes as NSDictionary).underscoreKeys()
     }
     
-    public func attributesToSend() -> [String: AnyObject] {
+    open func attributesToSend() -> [String: AnyObject] {
         let attrs = attributes() as NSDictionary
         let only: [String]
         if isKVOEnabled {
@@ -163,7 +175,7 @@ public class Remote: NSObject {
             only = nonNilAttributes()
         }
 
-        let attributesToSend = attrs.only(only) as! [String: AnyObject]
+        let attributesToSend = attrs.only(keys: only) as! [String: AnyObject]
 
         //TODO: use preferences to determine if underscore or not
         return (attributesToSend as NSDictionary).underscoreKeys()
@@ -172,11 +184,11 @@ public class Remote: NSObject {
 
 
 
-    // MARK: Accociations
+    // MARK: Associations
 
-    public func accociated(accociation: Lunch.Type) -> RemoteClass {
+    open func associated(_ accociation: Lunch.Type) -> RemoteClass {
         let accociateRemote = RemoteClass(subject: accociation)
-        let key = subjectClassName().underscoreCase()
+        let key = subjectClassName().underscoreCased()
         accociateRemote.nestedUnder[key] = id
         return accociateRemote
     }
@@ -193,18 +205,18 @@ public class Remote: NSObject {
         return keys
     }
 
-    public func isDirty() -> Bool {
+    open func isDirty() -> Bool {
         return (!isKVOEnabled && nonNilAttributes().count > 0)
             || (isKVOEnabled && changedAttributes.count > 0)
     }
 
-    public func isChanged(propertyName: String) -> Bool {
-        if !isKVOEnabled && nonNilAttributes().contains(propertyName.underscoreCase()) {
+    open func isChanged(_ propertyName: String) -> Bool {
+        if !isKVOEnabled && nonNilAttributes().contains(propertyName.underscoreCased()) {
             return true
         }
 
         for (key, _) in changedAttributes {
-            if key.underscoreCase() == propertyName.underscoreCase() {
+            if key.underscoreCased() == propertyName.underscoreCased() {
                 return true
             }
         }
@@ -212,8 +224,8 @@ public class Remote: NSObject {
         return false
     }
 
-    public func oldValueFor(propertyName: String) -> AnyObject? {
-        if let oldValue: AnyObject = changedAttributes[propertyName] {
+    open func oldValueFor(_ propertyName: String) -> Any? {
+        if let oldValue: Any = changedAttributes[propertyName] {
             return (oldValue is NSNull) ? nil : oldValue
         }
         return nil
@@ -223,7 +235,7 @@ public class Remote: NSObject {
     func addPropertyObservers() {
         if isKVOEnabled { return }
         for property in subject.local.properties() {
-            subject.addObserver(self, forKeyPath: property, options: [.New, .Old], context: nil)
+            subject.addObserver(self, forKeyPath: property, options: [.new, .old], context: &context)
         }
         isKVOEnabled = true
     }
@@ -235,9 +247,11 @@ public class Remote: NSObject {
         isKVOEnabled = false
     }
 
-    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        if changedAttributes[keyPath!] != nil { return }
-        let old = change!["old"]
+    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard context == &self.context else { return }
+        guard changedAttributes[keyPath!] == nil else { return }
+        
+        let old = change![NSKeyValueChangeKey.oldKey]
         changedAttributes[keyPath!] = old
     }
 
@@ -249,42 +263,42 @@ public class Remote: NSObject {
 
     // MARK: REST instance methods
 
-    public func reload<T: Lunch>(callback: (T?)->()) {
-        let url = remoteClassInstance().urlForAction(.SHOW, remoteId: id)
+    open func reload<T: Lunch>(_ callback: @escaping (T?)->()) {
+        let url = remoteClassInstance().urlForAction(.show, remoteId: id)
 
-        request(.GET, url: url) { object, _ in
+        request(.get, url: url) { object, _ in
             callback(object)
         }
     }
 
 
-    public func save<T: Lunch>(callback: (T)->()) {
-        let action: RESTAction = (id == nil) ? .CREATE : .UPDATE
+    open func save<T: Lunch>(_ callback: @escaping (T)->()) {
+        let action: RESTAction = (id == nil) ? .create : .update
         let url = remoteClassInstance().urlForAction(action, remoteId: id)
         let parameters = attributesToSend()
-        let method: Alamofire.Method = (action == .CREATE) ? .POST : .PATCH
+        let method: Alamofire.HTTPMethod = (action == .create) ? .post : .patch
         
         request(method, url: url, parameters: parameters) { object, _ in
             callback(object!)
         }
     }
 
-    public func destroy<T: Lunch>(callback: (T?)->()) {
-        let url = remoteClassInstance().urlForAction(.DESTROY, remoteId:id)
+    open func destroy<T: Lunch>(_ callback: @escaping (T?)->()) {
+        let url = remoteClassInstance().urlForAction(.destroy, remoteId:id)
 
-        request(.DELETE, url: url) { object, _ in
+        request(.delete, url: url) { object, _ in
             callback(object)
         }
     }
 
 
-    public func assignAttributes(attributeChanges: [String: AnyObject]) {
+    open func assignAttributes(_ attributeChanges: [String: Any]) {
         for (key, value) in attributeChanges {
             assignAttribute(key, withValue: value)
         }
     }
     
-    public func assignAttribute(attributeName: String, withValue value: AnyObject?) {
+    open func assignAttribute(_ attributeName: String, withValue value: Any?) {
         var attributeName = attributeName
         if attributeName == "id" {
             attributeName = remoteIdentifier()
@@ -293,7 +307,7 @@ public class Remote: NSObject {
         addPropertyObservers()
     }
     
-    private func subjectClassName() -> String {
-        return String(subjectClass).componentsSeparatedByString(".").last!
+    fileprivate func subjectClassName() -> String {
+        return String(describing: subjectClass).components(separatedBy: ".").last!
     }
 }

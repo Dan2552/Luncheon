@@ -8,9 +8,10 @@ end
 target 'Luncheon_Tests' do
   pod "Luncheon", path: "../"
 
+  pod 'Placemat', path: "/Users/dan/projects/Placemat"
   pod 'Quick'
   pod 'Nimble'
-  pod 'Nocilla'
+  pod 'Nocilla', git: "https://github.com/pcantrell/Nocilla/", branch: "null-annotations"
 end
 
 post_install do |installer|

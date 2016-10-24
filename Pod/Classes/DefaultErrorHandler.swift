@@ -6,7 +6,7 @@
 //
 //
 
-public let defaultErrorHandler: (error: NSError?, status: Int?, value: AnyObject?)->(Bool) = { error, status, value in
+public let defaultErrorHandler: (_ error: Error?, _ status: Int?, _ value: Any?)->(Bool) = { error, status, value in
     var message = error?.localizedDescription
     
     message = message ?? railsErrorResponse(status, errors: value)
@@ -18,8 +18,8 @@ public let defaultErrorHandler: (error: NSError?, status: Int?, value: AnyObject
     return false
 }
 
-public func railsErrorResponse(status: Int?, errors: AnyObject?) -> String? {
-    if status < 300 && status > 199 { return nil }
+public func railsErrorResponse(_ status: Int?, errors: Any?) -> String? {
+    if status! < 300 && status! > 199 { return nil }
     if status == 403 { return "You don't have permission to retrieve this resource" }
     if status == 422 {
         if let errors = errors as? [String: [String]] {
@@ -32,7 +32,7 @@ public func railsErrorResponse(status: Int?, errors: AnyObject?) -> String? {
             }
         } else if let errors = errors as? [String: [String: [String]]] {
             if let errorsValue = errors["errors"] {
-                return railsErrorResponse(status, errors: errorsValue)
+                return railsErrorResponse(status, errors: errorsValue as AnyObject?)
             }
         }
     }
